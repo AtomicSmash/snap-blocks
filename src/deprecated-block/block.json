@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "snap-blocks/deprecated-block",
+	"version": "0.1.0",
+	"title": "Deprecated block",
+	"description": "This is an example block created for testing purposes.",
+	"textdomain": "snap-blocks",
+	"attributes": {},
+	"category": "theme",
+	"script": "deprecated-block-script",
+	"editorScript": "deprecated-block-editor-script",
+	"viewScript": "deprecated-block-view-script",
+	"style": "deprecated-block-styles",
+	"editorStyle": "deprecated-block-editor-styles"
+}

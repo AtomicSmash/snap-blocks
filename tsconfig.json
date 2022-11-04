@@ -12,16 +12,18 @@
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"jsx": "react-jsx",
+		"module": "es2022",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"target": "ES2021",
 		"strict": true,
 		"allowJs": true,
+		"checkJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
 		"skipLibCheck": true,
 
-		// ESBuild takes care of building everything.
+		// WP Scripts takes care of building everything.
 		"noEmit": true
 	}
 }

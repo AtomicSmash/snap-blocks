@@ -19,15 +19,9 @@ export const attributes = {};
  */
 export const supports = {};
 
-// Define stylesheet location relative to block.json.
-export const style = [`file:./v2/styles.css`];
-export const editorStyle = [`file:./v2/editor-styles.css`];
-
 export default {
 	attributes,
 	supports,
 	edit,
 	save,
-	style,
-	editorStyle,
 };

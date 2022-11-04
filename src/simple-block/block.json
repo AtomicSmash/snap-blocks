@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "snap-blocks/simple-block",
+	"version": "0.1.0",
+	"title": "Simple block",
+	"description": "This is an example block created for testing purposes.",
+	"textdomain": "snap-blocks",
+	"attributes": {},
+	"category": "theme",
+	"script": "simple-block-script",
+	"editorScript": "simple-block-editor-script",
+	"viewScript": "simple-block-view-script",
+	"style": "simple-block-styles",
+	"editorStyle": "simple-block-editor-styles"
+}

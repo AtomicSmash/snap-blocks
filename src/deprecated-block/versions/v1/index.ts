@@ -9,7 +9,9 @@ import { attributes, supports } from "../v2"; // Example of what to do if proper
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-deprecation/ The WordPress documentation}
  */
-const migrate = () => {};
+const migrate = () => {
+	return {};
+};
 
 /**
  * Deprecation isEligible function.
@@ -19,11 +21,9 @@ const migrate = () => {};
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-deprecation/ The WordPress documentation}
  */
-const isEligible = () => {};
-
-// Define stylesheet location relative to block.json.
-export const style = [`file:./v2/styles.css`];
-export const editorStyle = [`file:./v2/editor-styles.css`];
+const isEligible = () => {
+	return false;
+};
 
 export default {
 	attributes,
@@ -32,6 +32,4 @@ export default {
 	isEligible,
 	edit,
 	save,
-	style,
-	editorStyle,
 };

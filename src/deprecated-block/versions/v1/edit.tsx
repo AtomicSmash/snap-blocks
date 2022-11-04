@@ -11,6 +11,7 @@ import { __ } from "@wordpress/i18n";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
+import type { WPElement } from "@wordpress/element";
 import { useBlockProps } from "@wordpress/block-editor";
 
 /**
@@ -21,9 +22,10 @@ import { useBlockProps } from "@wordpress/block-editor";
  *
  * @return {WPElement} Element to render.
  */
-export function edit() {
+export function edit(): WPElement {
+	const { className } = useBlockProps();
 	return (
-		<p {...useBlockProps()}>
+		<p {...useBlockProps()} className={`${className} border-2`}>
 			{__("Block Test – hello from the editor!", "block-test")}
 		</p>
 	);
