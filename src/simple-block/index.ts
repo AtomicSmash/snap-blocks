@@ -9,8 +9,6 @@ import { registerBlockCollection, registerBlockType } from "@wordpress/blocks";
  * Internal dependencies
  */
 import v1 from "./versions/v1";
-import "./style.css";
-import "./editor-styles.css";
 import metadata from "./block.json";
 
 /**

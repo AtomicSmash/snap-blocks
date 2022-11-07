@@ -24,6 +24,13 @@ function block_test_block_test_block_init() {
 	register_block_type( __DIR__ . '/build' );
 }
 add_action( 'init', 'block_test_block_test_block_init' );
+
+if (!function_exists('str_ends_with')) {
+	function str_ends_with($haystack, $needle) {
+		return $needle !== '' ? substr($haystack, -strlen($needle)) === $needle : true;
+	}
+}
+
 /**
  * Here we register all our JS and CSS files ready to be enqueued.
  * The block names are then referenced in and enqueued from the block.json files of the block.
@@ -49,7 +56,7 @@ function register_block_assets_by_block_name() {
 		if (!in_array($block_name, $registeredBlockStyles, true)) {
 			$directoryFiles = array_diff(scandir($buildDir), array('..', '.', $filename));
 			foreach ($directoryFiles as $file) {
-				if (!str_ends_with($file, '.css') || str_ends_with($file, '.map.css')) {
+				if (!str_ends_with($file, '.css')) {
 					continue;
 				}
 				$stylesheet_name = explode($file, '.')[0];

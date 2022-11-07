@@ -10,8 +10,6 @@ import { registerBlockCollection, registerBlockType } from "@wordpress/blocks";
  */
 import v1 from "./versions/v1";
 import v2 from "./versions/v2";
-import "./style.css";
-import "./editor-styles.css";
 import metadata from "./block.json";
 
 /**

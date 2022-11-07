@@ -1,7 +1,8 @@
 import defaultConfig from "@wordpress/scripts/config/webpack.config.js";
 import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
-import MiniCSSExtractPlugin from "mini-css-extract-plugin";
 import { readdir } from "node:fs/promises";
+
+const isProduction = process.env.NODE_ENV === "production";
 
 function toCamelCase(text) {
 	return text.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
@@ -44,7 +45,9 @@ async function getAllBlocksJSEntryPoints() {
 			}
 			entryPoints[toCamelCase(entryName)] = {
 				import: `./src/${block}/${blockJSFile}`,
-				filename: `${block}/${filename}.[contenthash].min.js`,
+				filename: `${block}/${filename}${
+					isProduction ? `.[contenthash]` : ""
+				}.js`,
 			};
 		}
 	}
@@ -55,22 +58,12 @@ async function getAllBlocksJSEntryPoints() {
 const config = {
 	...defaultConfig,
 	entry: await getAllBlocksJSEntryPoints(),
-	output: {
-		...defaultConfig.output,
-		clean: true,
-	},
 	plugins: [
 		...(defaultConfig.plugins
 			? defaultConfig.plugins.filter((plugin) => {
-					return !(
-						plugin instanceof MiniCSSExtractPlugin ||
-						plugin instanceof DependencyExtractionWebpackPlugin
-					);
+					return !(plugin instanceof DependencyExtractionWebpackPlugin);
 			  })
 			: []),
-		new MiniCSSExtractPlugin({
-			filename: `[name].[contenthash].min.css`,
-		}),
 		new DependencyExtractionWebpackPlugin({
 			combineAssets: true,
 		}),
