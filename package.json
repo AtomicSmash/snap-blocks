@@ -8,7 +8,7 @@
 	"main": "build/index.js",
 	"browserslist": "defaults and >1% and not samsung > 0 and not op_mini all",
 	"scripts": {
-		"build": "npm-run-all clean --parallel build:*",
+		"build": "NODE_ENV=\"production\" npm-run-all clean --parallel build:*",
 		"build:css": "npm-run-all css:*",
 		"build:wp": "wp-scripts build --config webpack.config.mjs",
 		"clean": "del-cli \"./build/\"",
