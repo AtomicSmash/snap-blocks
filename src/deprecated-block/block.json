@@ -8,6 +8,7 @@
 	"textdomain": "snap-blocks",
 	"attributes": {},
 	"category": "theme",
+	"keywords": ["snap"],
 	"script": "deprecated-block-script",
 	"editorScript": "deprecated-block-editor-script",
 	"viewScript": "deprecated-block-view-script",

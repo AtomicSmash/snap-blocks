@@ -16,9 +16,8 @@ import { useBlockProps } from "@wordpress/block-editor";
  * @return {WPElement} Element to render.
  */
 export function save() {
-	const { className } = useBlockProps();
 	return (
-		<p className={`${className} p-4 m-4`} {...useBlockProps.save()}>
+		<p className={`p-4 m-4`} {...useBlockProps.save()}>
 			{"Block Test – hello from the saved content!"}
 		</p>
 	);

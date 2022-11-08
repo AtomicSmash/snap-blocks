@@ -13,6 +13,8 @@
  * @package           block-test
  */
 
+define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'build/');
+
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
  * Behind the scenes, it registers also all assets so they can be enqueued
@@ -21,7 +23,10 @@
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function block_test_block_test_block_init() {
-	register_block_type( __DIR__ . '/build' );
+    $blocksFolders = array_diff(scandir(BLOCKS_DIR), array('..', '.', 'assets.php'));
+    foreach ($blocksFolders as $block) {
+        register_block_type( __DIR__ . '/build/' . $block . '/block.json' );
+    }
 }
 add_action( 'init', 'block_test_block_test_block_init' );
 
@@ -36,8 +41,7 @@ if (!function_exists('str_ends_with')) {
  * The block names are then referenced in and enqueued from the block.json files of the block.
  */
 function register_block_assets_by_block_name() {
-	$buildDir = plugin_dir_path( __FILE__ ).'build/';
-	$assets = include( $buildDir . 'assets.php');
+	$assets = include( BLOCKS_DIR . 'assets.php');
 	$registeredBlockStyles = array();
 
 	foreach( $assets as $block_path => $asset ) {
@@ -54,12 +58,13 @@ function register_block_assets_by_block_name() {
 		}
 		wp_register_script($script_handle, plugins_url('build/'. $block_path, __FILE__), $asset['dependencies'], $asset['version'], false);
 		if (!in_array($block_name, $registeredBlockStyles, true)) {
-			$directoryFiles = array_diff(scandir($buildDir), array('..', '.', $filename));
+
+			$directoryFiles = array_diff(scandir(BLOCKS_DIR . '/' . $block_name), array('..', '.', $filename));
 			foreach ($directoryFiles as $file) {
 				if (!str_ends_with($file, '.css')) {
 					continue;
 				}
-				$stylesheet_name = explode($file, '.')[0];
+				$stylesheet_name = explode('.',$file)[0];
 				if ($stylesheet_name === 'index') {
 					$stylesheet_handle = $block_name . '-styles';
 				} else if ($stylesheet_name === 'style-index') {
@@ -67,9 +72,10 @@ function register_block_assets_by_block_name() {
 				} else {
 					$stylesheet_handle = $stylesheet_name;
 				}
-				wp_register_style($stylesheet_handle, plugins_url('build/'. $block_name . $file, __FILE__), $asset['dependencies'], $asset['version'], false);
+				wp_register_style($stylesheet_handle, plugins_url('build/'. $block_name . '/' . $file, __FILE__), array(), null, false);
 			}
 			$registeredBlockStyles[] = $block_name;
 		}
 	}
 }
+add_action( 'wp_enqueue_scripts', 'register_block_assets_by_block_name' );
