@@ -1,11 +1,11 @@
-import defaultConfig from "@wordpress/scripts/config/webpack.config.js";
-import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
 import { readdir } from "node:fs/promises";
+import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
+import defaultConfig from "@wordpress/scripts/config/webpack.config.js";
 
 const isProduction = process.env.NODE_ENV === "production";
 
 function toCamelCase(text) {
-	return text.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
+	return text.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2) {
 		if (p2) return p2.toUpperCase();
 		return p1.toLowerCase();
 	});
@@ -56,13 +56,14 @@ async function getAllBlocksJSEntryPoints() {
 			};
 		}
 	}
+	// eslint-disable-next-line no-console
 	console.log({ entryPoints });
 	return entryPoints;
 }
 
 const config = {
 	...defaultConfig,
-	entry: await getAllBlocksJSEntryPoints(),
+	entry: getAllBlocksJSEntryPoints(),
 	plugins: [
 		...defaultConfig.plugins.filter(
 			(plugin) =>
