@@ -1,5 +1,5 @@
 import { registerBlockCollection } from "@wordpress/blocks";
-import { registerBlockType } from "../wordpressBlockDefinitions";
+import { registerBlockType } from "../../wordpressBlockDefinitions";
 import blockMetaData from "./block.json";
 import v1, { Attributes, InterpretedAttributes } from "./versions/v1";
 

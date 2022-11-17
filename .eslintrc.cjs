@@ -29,8 +29,11 @@ module.exports = {
 		{
 			files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
 			extends: ["eslint:recommended", "plugin:import/recommended", "prettier"],
-			plugins: ["node"],
+			plugins: ["import", "node"],
 			env: {
+				browser: true,
+				commonjs: true,
+				es6: true,
 				node: true,
 			},
 			rules: commonRules,
@@ -40,6 +43,9 @@ module.exports = {
 			parser: "@typescript-eslint/parser",
 			plugins: ["node", "@typescript-eslint"],
 			env: {
+				browser: true,
+				commonjs: true,
+				es6: true,
 				node: true,
 			},
 			extends: [
