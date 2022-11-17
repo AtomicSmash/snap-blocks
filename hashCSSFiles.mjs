@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { readFileSync, renameSync } from "node:fs";
-import glob from "glob";
 import { resolve } from "node:path";
+import glob from "glob";
 
 glob(`${process.cwd()}/build/**/*.css`, {}, function (error, matches) {
 	if (error) {
