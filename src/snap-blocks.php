@@ -13,7 +13,7 @@
  * @package           block-test
  */
 
-define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'build/');
+define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'blocks/');
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
@@ -24,16 +24,18 @@ define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'build/');
  */
 function block_test_block_test_block_init() {
 		register_block_assets_by_block_name();
-    $blocksFolders = array_diff(scandir(BLOCKS_DIR), array('..', '.', 'assets.php'));
+    $blocksFolders = array_diff(scandir(BLOCKS_DIR), array('..', '.'));
     foreach ($blocksFolders as $block) {
-        if (strpos($block, 'wordpressBlockDefinitions') !== false) {
-            continue;
-        }
-        register_block_type( __DIR__ . '/build/' . $block . '/block.json' );
+        register_block_type( __DIR__ . '/blocks/' . $block . '/block.json' );
     }
 }
 add_action( 'init', 'block_test_block_test_block_init' );
 
+if (!function_exists('str_starts_with')) {
+	function str_starts_with($haystack, $needle) {
+			return (string)$needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
+	}
+}
 if (!function_exists('str_ends_with')) {
 	function str_ends_with($haystack, $needle) {
 		return $needle !== '' ? substr($haystack, -strlen($needle)) === $needle : true;
@@ -45,14 +47,17 @@ if (!function_exists('str_ends_with')) {
  * The block names are then referenced in and enqueued from the block.json files of the block.
  */
 function register_block_assets_by_block_name() {
-	$assets = include( BLOCKS_DIR . 'assets.php');
+	$assets = include( plugin_dir_path( __FILE__ ) . 'assets.php');
 	$registeredBlockStyles = array();
 
 	foreach( $assets as $block_path => $asset ) {
-        if (!strpos($block_path, '/')) {
-            continue;
-        }
-		list($block_name, $filename) = explode('/', $block_path);
+		if (!str_starts_with($block_path, 'blocks/')) {
+				continue;
+		}
+		list($block_name, $filename) = explode('/', str_replace('blocks/','',$block_path));
+		error_log('$block_path ' . $block_path);
+		error_log('$block_name ' . $block_name);
+		error_log('$filename ' . $filename);
 		list($script_name) = explode('.', $filename);
 		if ($script_name === 'index') {
 			$script_handle = $block_name . '-script';
@@ -63,10 +68,10 @@ function register_block_assets_by_block_name() {
 		} else {
 			$script_handle = $script_name;
 		}
-		wp_register_script($script_handle, plugins_url('build/'. $block_path, __FILE__), $asset['dependencies'], $asset['version'], false);
+		wp_register_script($script_handle, plugins_url( $block_path, __FILE__), $asset['dependencies'], $asset['version'], false);
 		if (!in_array($block_name, $registeredBlockStyles, true)) {
 
-			$directoryFiles = array_diff(scandir(BLOCKS_DIR . '/' . $block_name), array('..', '.', $filename));
+			$directoryFiles = array_diff(scandir(BLOCKS_DIR . $block_name), array('..', '.', $filename));
 			foreach ($directoryFiles as $file) {
 				if (!str_ends_with($file, '.css')) {
 					continue;
@@ -79,7 +84,7 @@ function register_block_assets_by_block_name() {
 				} else {
 					$stylesheet_handle = $stylesheet_name;
 				}
-				wp_register_style($stylesheet_handle, plugins_url('build/'. $block_name . '/' . $file, __FILE__), array(), null, false);
+				wp_register_style($stylesheet_handle, plugins_url( $block_name . '/' . $file, __FILE__), array(), null, false);
 			}
 			$registeredBlockStyles[] = $block_name;
 		}
