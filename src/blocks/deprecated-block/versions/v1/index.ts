@@ -114,3 +114,10 @@ export default {
 	edit,
 	save,
 };
+
+/*
+Code output of v1 for testing purposes.
+<!-- wp:snap-blocks/deprecated-block {"title":"This is a \u003cstrong\u003eblock\u003c/strong\u003e to be \u003cem\u003emigrated\u003c/em\u003e"} -->
+<div class="wp-block-snap-blocks-deprecated-block align-none blockSize-small"><h2>This is a <strong>block</strong> to be <em>migrated</em></h2><img src="https://placekitten.com/200/300" alt=""/></div>
+<!-- /wp:snap-blocks/deprecated-block -->
+*/
