@@ -12,7 +12,12 @@ function toCamelCase(text) {
 }
 
 async function getAllBlocksJSEntryPoints() {
-	let entryPoints = {};
+	let entryPoints = {
+		wordpressBlockDefinitions: {
+			import: "./src/wordpressBlockDefinitions.ts",
+			filename: "wordpressBlockDefinitions.[contenthash].js",
+		},
+	};
 	const blockFolders = await readdir("./src", { withFileTypes: true }).then(
 		(srcDirFiles) => {
 			return srcDirFiles
@@ -59,11 +64,10 @@ const config = {
 	...defaultConfig,
 	entry: await getAllBlocksJSEntryPoints(),
 	plugins: [
-		...(defaultConfig.plugins
-			? defaultConfig.plugins.filter((plugin) => {
-					return !(plugin instanceof DependencyExtractionWebpackPlugin);
-			  })
-			: []),
+		...defaultConfig.plugins.filter(
+			(plugin) =>
+				plugin.constructor.name !== "DependencyExtractionWebpackPlugin"
+		),
 		new DependencyExtractionWebpackPlugin({
 			combineAssets: true,
 		}),

@@ -7,8 +7,6 @@
 	"category": "theme",
 	"icon": "smiley",
 	"description": "This is an example block created for testing purposes.",
-	"attributes": {},
-	"supports": {},
 	"textdomain": "snap-blocks",
 	"keywords": ["snap"],
 	"script": "simple-block-script",

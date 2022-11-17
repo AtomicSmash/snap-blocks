@@ -1,17 +1,16 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
- */
+import type { InterpretedAttributes } from "./index";
+import type { BlockEditProps } from "@wordpress/blocks";
+import type { WPElement } from "@wordpress/element";
+import {
+	useBlockProps,
+	RichText,
+	AlignmentToolbar,
+	BlockControls,
+	InspectorControls,
+	InnerBlocks,
+} from "@wordpress/block-editor";
+import { SelectControl, Panel, PanelBody } from "@wordpress/components";
 import { __ } from "@wordpress/i18n";
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-import { useBlockProps } from "@wordpress/block-editor";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -21,11 +20,62 @@ import { useBlockProps } from "@wordpress/block-editor";
  *
  * @return {WPElement} Element to render.
  */
-export function edit() {
-	const { className } = useBlockProps();
+export function edit({
+	attributes,
+	setAttributes,
+}: BlockEditProps<InterpretedAttributes>): WPElement {
+	const { title, align, size } = attributes;
+	const blockProps = useBlockProps({ className: `align-${align}` });
+
 	return (
-		<p {...useBlockProps()} className={`${className} border-2`}>
-			{__("Block Test – hello from the editor!", "block-test")}
-		</p>
+		<>
+			<BlockControls>
+				<AlignmentToolbar
+					value={align}
+					onChange={(newAlign: InterpretedAttributes["align"]) => {
+						setAttributes({
+							align: newAlign === undefined ? "none" : newAlign,
+						});
+					}}
+				/>
+			</BlockControls>
+			<InspectorControls>
+				<Panel>
+					<PanelBody title="Block settings">
+						<SelectControl<InterpretedAttributes["size"]>
+							label="Block size"
+							value={size}
+							options={[
+								{
+									label: "Small",
+									value: "small",
+								},
+								{
+									label: "Large",
+									value: "large",
+								},
+							]}
+							onChange={(newSize: InterpretedAttributes["size"]) => {
+								setAttributes({
+									size: newSize,
+								});
+							}}
+						/>
+					</PanelBody>
+				</Panel>
+			</InspectorControls>
+			<div {...blockProps}>
+				<RichText
+					tagName="h2"
+					onChange={(newTitle: InterpretedAttributes["title"]) => {
+						setAttributes({ title: newTitle });
+					}}
+					allowedFormats={["core/bold", "core/italic"]}
+					value={title}
+					placeholder={__("Write your title...")}
+				/>
+				<InnerBlocks template={[["core/image"]]} templateLock="all" />
+			</div>
+		</>
 	);
 }

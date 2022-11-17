@@ -11,10 +11,6 @@
 @tailwind utilities;
 @tailwind variants;
 
-/**
- * Add styles below this line.
- */
-
 .wp-block-dynamic-block-dynamic-block {
 	background-color: #21759b;
 	color: #fff;

@@ -23,8 +23,12 @@ define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'build/');
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function block_test_block_test_block_init() {
+		register_block_assets_by_block_name();
     $blocksFolders = array_diff(scandir(BLOCKS_DIR), array('..', '.', 'assets.php'));
     foreach ($blocksFolders as $block) {
+        if (strpos($block, 'wordpressBlockDefinitions') !== false) {
+            continue;
+        }
         register_block_type( __DIR__ . '/build/' . $block . '/block.json' );
     }
 }
@@ -45,6 +49,9 @@ function register_block_assets_by_block_name() {
 	$registeredBlockStyles = array();
 
 	foreach( $assets as $block_path => $asset ) {
+        if (!strpos($block_path, '/')) {
+            continue;
+        }
 		list($block_name, $filename) = explode('/', $block_path);
 		list($script_name) = explode('.', $filename);
 		if ($script_name === 'index') {
@@ -65,9 +72,9 @@ function register_block_assets_by_block_name() {
 					continue;
 				}
 				$stylesheet_name = explode('.',$file)[0];
-				if ($stylesheet_name === 'index') {
+				if ($stylesheet_name === 'style') {
 					$stylesheet_handle = $block_name . '-styles';
-				} else if ($stylesheet_name === 'style-index') {
+				} else if ($stylesheet_name === 'editor-styles') {
 					$stylesheet_handle = $block_name . '-editor-styles';
 				} else {
 					$stylesheet_handle = $stylesheet_name;
@@ -78,4 +85,3 @@ function register_block_assets_by_block_name() {
 		}
 	}
 }
-add_action( 'wp_enqueue_scripts', 'register_block_assets_by_block_name' );

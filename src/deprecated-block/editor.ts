@@ -1,35 +1,25 @@
-/**
- * Registers a new block provided a unique name and an object defining its behavior.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
-import {
-	BlockIcon,
-	registerBlockCollection,
-	registerBlockType,
-} from "@wordpress/blocks";
+import { registerBlockCollection } from "@wordpress/blocks";
+import { registerBlockType } from "../wordpressBlockDefinitions";
+import blockMetaData from "./block.json";
+import v1, {
+	InterpretedAttributes as v1InterpretedAttributes,
+} from "./versions/v1";
+import v2, { Attributes, InterpretedAttributes } from "./versions/v2";
 
-/**
- * Internal dependencies
- */
-import v1 from "./versions/v1";
-import v2 from "./versions/v2";
-import looseMetadata from "./block.json";
-
-const metadata = looseMetadata as typeof looseMetadata & {
-	icon?: BlockIcon | undefined;
-};
+type AllPossibleAttributes = v1InterpretedAttributes & InterpretedAttributes;
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType(metadata.name, {
-	...metadata,
-	...v2,
-	deprecated: [v2, v1],
-});
+registerBlockType<Attributes, InterpretedAttributes, AllPossibleAttributes>(
+	blockMetaData.name,
+	{
+		...v2,
+		deprecated: [v1],
+	}
+);
 registerBlockCollection("snap-blocks", {
 	title: "Snap blocks",
 	icon: "smiley",

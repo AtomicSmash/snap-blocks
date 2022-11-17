@@ -1,10 +1,7 @@
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-import { useBlockProps } from "@wordpress/block-editor";
+import type { InterpretedAttributes } from "./index";
+import type { BlockSaveProps } from "@wordpress/blocks";
+import type { WPElement } from "@wordpress/element";
+import { useBlockProps, RichText } from "@wordpress/block-editor";
 
 /**
  * The save function defines the way in which the different attributes should
@@ -15,10 +12,17 @@ import { useBlockProps } from "@wordpress/block-editor";
  *
  * @return {WPElement} Element to render.
  */
-export function save() {
+export function save({
+	attributes,
+}: BlockSaveProps<InterpretedAttributes>): WPElement {
+	const { title, url, align, size } = attributes;
+	const blockProps = useBlockProps.save({
+		className: `align-${align} blockSize-${size}`,
+	});
 	return (
-		<p className={`p-4 m-4`} {...useBlockProps.save()}>
-			{"Block Test – hello from the saved content!"}
-		</p>
+		<div {...blockProps}>
+			<RichText.Content tagName="h2" value={title} />
+			<img src={url} alt="" />
+		</div>
 	);
 }

@@ -1,4 +1,4 @@
-import { edit } from "./edit";
+import { edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { save } from "./save";
 
 /**
@@ -8,7 +8,37 @@ import { save } from "./save";
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/ The WordPress documentation}
  */
-export const attributes = {};
+export const attributes: {
+	title: {
+		type: "string";
+	};
+	size: {
+		enum: ["small", "large"];
+		default: "small";
+	};
+	align: {
+		type: "string";
+		default: "none";
+	};
+} = {
+	title: {
+		type: "string",
+	},
+	size: {
+		enum: ["small", "large"],
+		default: "small",
+	},
+	align: {
+		type: "string",
+		default: "none",
+	},
+};
+export type Attributes = typeof attributes;
+export type InterpretedAttributes = {
+	title: string;
+	size: "small" | "large";
+	align: string;
+};
 
 /**
  * Block supports.
@@ -18,6 +48,7 @@ export const attributes = {};
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/ The WordPress documentation}
  */
 export const supports = {};
+export type Supports = typeof supports;
 
 export default {
 	attributes,

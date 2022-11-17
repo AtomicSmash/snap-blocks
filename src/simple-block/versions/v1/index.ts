@@ -8,7 +8,50 @@ import { save } from "./save";
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/ The WordPress documentation}
  */
-export const attributes = {};
+export const attributes: {
+	url: {
+		type: "string";
+		source: "attribute";
+		selector: "img";
+		attribute: "src";
+	};
+	title: {
+		type: "string";
+	};
+	size: {
+		enum: ["small", "large"];
+		default: "small";
+	};
+	align: {
+		type: "string";
+		default: "none";
+	};
+} = {
+	url: {
+		type: "string",
+		source: "attribute",
+		selector: "img",
+		attribute: "src",
+	},
+	title: {
+		type: "string",
+	},
+	size: {
+		enum: ["small", "large"],
+		default: "small",
+	},
+	align: {
+		type: "string",
+		default: "none",
+	},
+};
+export type Attributes = typeof attributes;
+export type InterpretedAttributes = {
+	url: string;
+	title: string;
+	size: "small" | "large";
+	align: string;
+};
 
 /**
  * Block supports.
@@ -18,35 +61,11 @@ export const attributes = {};
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/ The WordPress documentation}
  */
 export const supports = {};
-
-/**
- * Deprecation migration function.
- *
- * This function dictates to WordPress how to update the block to the latest version.
- *
- * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-deprecation/ The WordPress documentation}
- */
-const migrate = () => {
-	return {};
-};
-
-/**
- * Deprecation isEligible function.
- *
- * This function is particularly useful in cases where a block is technically valid even once deprecated,
- * but still requires updates to its attributes or inner blocks.
- *
- * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-deprecation/ The WordPress documentation}
- */
-const isEligible = () => {
-	return false;
-};
+export type Supports = typeof supports;
 
 export default {
 	attributes,
 	supports,
-	migrate,
-	isEligible,
 	edit,
 	save,
 };
