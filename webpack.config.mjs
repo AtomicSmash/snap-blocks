@@ -119,37 +119,4 @@ export default [
 			},
 		],
 	},
-	{
-		...config,
-		output: {
-			path: resolve(
-				process.cwd(),
-				"../snap/public/wp-content/plugins/snap-blocks/build"
-			),
-			clean: true,
-		},
-		plugins: [
-			...config.plugins,
-			{
-				apply: (compiler) => {
-					compiler.hooks.afterEmit.tapPromise(
-						"Build CSS and copy to test area",
-						async () => {
-							return execute(
-								"postcss src/blocks/**/*.css --base src --dir ../snap/public/wp-content/plugins/snap-blocks/build"
-							)
-								.then(() => {
-									execute("node scripts/hashCSSFiles.mjs").catch((error) => {
-										console.error(error);
-									});
-								})
-								.catch((error) => {
-									console.error(error);
-								});
-						}
-					);
-				},
-			},
-		],
-	},
 ];
