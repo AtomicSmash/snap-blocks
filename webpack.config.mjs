@@ -3,6 +3,7 @@ import { readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
 import defaultConfig from "@wordpress/scripts/config/webpack.config.js";
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 
 export async function execute(command) {
 	return new Promise((resolve, reject) => {
@@ -118,5 +119,9 @@ export default [
 				},
 			},
 		],
+		resolve: {
+			plugins: [new TsconfigPathsPlugin()],
+			extensions: [".ts", ".js", ".tsx", ".jsx"],
+		},
 	},
 ];
