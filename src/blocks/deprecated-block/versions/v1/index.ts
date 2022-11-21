@@ -4,7 +4,7 @@ import { omit } from "lodash";
 import {
 	BlockIsDeprecationEligibleFunction,
 	BlockMigrateDeprecationFunction,
-} from "../../../../helpers";
+} from "~/helpers";
 import { edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { save } from "./save";
 

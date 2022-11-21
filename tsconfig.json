@@ -21,6 +21,9 @@
 		"checkJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./src/*"]
+		},
 		"skipLibCheck": true,
 
 		// WP Scripts takes care of building everything.

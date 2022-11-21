@@ -1,4 +1,4 @@
-import { registerBlockType, registerSnapBlocksCollection } from "../../helpers";
+import { registerBlockType, registerSnapBlocksCollection } from "~/helpers";
 import blockMetaData from "./block.json";
 import v1, {
 	InterpretedAttributes as v1InterpretedAttributes,

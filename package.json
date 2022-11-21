@@ -37,6 +37,8 @@
 		"del": "^7.0.0",
 		"eslint": "^8.27.0",
 		"eslint-config-prettier": "^8.5.0",
+		"eslint-import-resolver-node": "^0.3.6",
+		"eslint-import-resolver-typescript": "^3.5.2",
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-node": "^11.1.0",
 		"glob": "^8.0.3",

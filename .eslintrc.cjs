@@ -25,6 +25,19 @@ const commonRules = {
 module.exports = {
 	root: true,
 	ignorePatterns: ["node_modules/**/*", "build/**/*"],
+	settings: {
+		"import/resolver": {
+			node: {
+				extensions: [".js", ".jsx", ".ts", ".tsx"],
+			},
+			typescript: {
+				alwaysTryTypes: true,
+			},
+		},
+		"import/parsers": {
+			["@typescript-eslint/parser"]: [".ts", ".tsx", ".d.ts"],
+		},
+	},
 	overrides: [
 		{
 			files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
