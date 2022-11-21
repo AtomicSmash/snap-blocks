@@ -1,5 +1,7 @@
-import { registerBlockCollection } from "@wordpress/blocks";
-import { registerBlockType } from "../../wordpressBlockDefinitions";
+import {
+	registerBlockType,
+	registerSnapBlocksCollection,
+} from "../../wordpressBlockDefinitions";
 import blockMetaData from "./block.json";
 import v1, { Attributes, InterpretedAttributes } from "./versions/v1";
 
@@ -11,7 +13,4 @@ import v1, { Attributes, InterpretedAttributes } from "./versions/v1";
 registerBlockType<Attributes, InterpretedAttributes>(blockMetaData.name, {
 	...v1,
 });
-registerBlockCollection("snap-blocks", {
-	title: "Snap blocks",
-	icon: "smiley",
-});
+registerSnapBlocksCollection();

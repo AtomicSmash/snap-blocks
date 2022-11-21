@@ -3,6 +3,7 @@ import type { WPElement } from "@wordpress/element";
 import {
 	createBlock,
 	registerBlockType as wordpressRegisterBlockType,
+	registerBlockCollection,
 } from "@wordpress/blocks";
 
 export type BlockCategory =
@@ -503,4 +504,11 @@ export function registerBlockType<
 ) {
 	/* @ts-expect-error Provided types are inaccurate and will provide an error with some valid inputs */
 	return wordpressRegisterBlockType<Attributes>(name, settings);
+}
+
+export function registerSnapBlocksCollection() {
+	registerBlockCollection("snap-blocks", {
+		title: "Snap blocks",
+		icon: "smiley",
+	});
 }
