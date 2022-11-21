@@ -1,4 +1,3 @@
-import type { BlockEditProps, BlockSaveProps } from "@wordpress/blocks";
 import type { WPElement } from "@wordpress/element";
 import {
 	createBlock,
@@ -280,6 +279,32 @@ export type BlockIsDeprecationEligibleFunction<
 	innerBlocks: BlockInstance[]
 ) => boolean;
 
+export interface BlockSaveProps<T extends Record<string, any>> {
+	readonly attributes: Readonly<T>;
+	readonly innerBlocks: Readonly<BlockInstance[]>;
+}
+export interface BlockEditProps<
+	Attributes extends Record<string, any>,
+	Context extends Record<string, any> = Record<string, never>
+> {
+	readonly clientId: string;
+	readonly attributes: Readonly<Attributes>;
+	readonly context: Context;
+	readonly insertBlocksAfter: BlockInstance[] | undefined;
+	readonly isSelected: boolean;
+	readonly mergeBlocks: BlockInstance[] | undefined;
+	readonly onRemove: () => void | undefined;
+	readonly onReplace: (
+		clientIds: string | string[],
+		blocks: BlockInstance | BlockInstance[],
+		indexToSelect: number,
+		initialPosition: 0 | -1 | null,
+		meta: Record<string, unknown>
+	) => BlockInstance[] | undefined;
+	readonly setAttributes: (attributes: Partial<Attributes>) => void;
+	readonly toggleSelection: (isSelectionEnabled: boolean) => void;
+}
+
 export type DeprecatedBlock<InterpretedAttributes extends Record<string, any>> =
 	{
 		/**
@@ -465,13 +490,14 @@ export type BlockSettings<
 	AllPossibleInterpretedAttributes extends Record<
 		string,
 		any
-	> = InterpretedAttributes
+	> = InterpretedAttributes,
+	Context extends Record<string, any> = Record<string, never>
 > = {
 	edit: ({
 		attributes,
 		setAttributes,
 		isSelected,
-	}: BlockEditProps<InterpretedAttributes>) => WPElement;
+	}: BlockEditProps<InterpretedAttributes, Context>) => WPElement;
 	save: ({ attributes }: BlockSaveProps<InterpretedAttributes>) => WPElement;
 	transforms?: {
 		from: BlockTransforms;
@@ -496,11 +522,16 @@ export function registerBlockType<
 	AllPossibleInterpretedAttributes extends Record<
 		string,
 		any
-	> = InterpretedAttributes
+	> = InterpretedAttributes,
+	Context extends Record<string, any> = Record<string, never>
 >(
 	name: string,
 	settings: Partial<BlockMetaData<Attributes>> &
-		BlockSettings<InterpretedAttributes, AllPossibleInterpretedAttributes>
+		BlockSettings<
+			InterpretedAttributes,
+			AllPossibleInterpretedAttributes,
+			Context
+		>
 ) {
 	/* @ts-expect-error Provided types are inaccurate and will provide an error with some valid inputs */
 	return wordpressRegisterBlockType<Attributes>(name, settings);

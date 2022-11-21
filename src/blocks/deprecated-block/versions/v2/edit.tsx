@@ -1,6 +1,6 @@
 import type { InterpretedAttributes } from "./index";
-import type { BlockEditProps } from "@wordpress/blocks";
 import type { WPElement } from "@wordpress/element";
+import type { BlockEditProps } from "~/helpers";
 import {
 	useBlockProps,
 	RichText,
