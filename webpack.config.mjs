@@ -26,9 +26,9 @@ function toCamelCase(text) {
 
 async function getAllBlocksJSEntryPoints() {
 	let entryPoints = {
-		wordpressBlockDefinitions: {
-			import: "./src/wordpressBlockDefinitions.ts",
-			filename: "wordpressBlockDefinitions.[contenthash].js",
+		helpers: {
+			import: "./src/helpers.ts",
+			filename: "helpers.[contenthash].js",
 		},
 	};
 	const blockFolders = await readdir("./src/blocks", {
