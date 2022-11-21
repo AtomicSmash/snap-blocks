@@ -29,7 +29,7 @@ async function getAllBlocksJSEntryPoints() {
 	let entryPoints = {
 		helpers: {
 			import: "./src/helpers.ts",
-			filename: "helpers.[contenthash].js",
+			filename: `helpers${isProduction ? `.[contenthash]` : ""}.js`,
 		},
 	};
 	const blockFolders = await readdir("./src/blocks", {
@@ -107,6 +107,9 @@ export default [
 								"postcss src/blocks/**/*.css --base src --dir build"
 							)
 								.then(() => {
+									if (!isProduction) {
+										return;
+									}
 									execute("node scripts/hashCSSFiles.mjs").catch((error) => {
 										console.error(error);
 									});
