@@ -82,7 +82,7 @@ function register_block_assets_by_block_name() {
 				} else {
 					$stylesheet_handle = $stylesheet_name;
 				}
-				wp_register_style($stylesheet_handle, plugins_url( 'build/'.$block_name . '/' . $file, __FILE__), array(), null, false);
+				wp_register_style($stylesheet_handle, plugins_url( 'build/blocks/'.$block_name . '/' . $file, __FILE__), array(), null, false);
 			}
 			$registeredBlockStyles[] = $block_name;
 		}
