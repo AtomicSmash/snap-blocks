@@ -31,6 +31,10 @@ async function getAllBlocksJSEntryPoints() {
 			import: "./src/helpers.ts",
 			filename: `helpers${isProduction ? `.[contenthash]` : ""}.js`,
 		},
+		svgs: {
+			import: "./src/svgs.tsx",
+			filename: `svgs${isProduction ? `.[contenthash]` : ""}.js`,
+		},
 	};
 	const blockFolders = await readdir("./src/blocks", {
 		withFileTypes: true,

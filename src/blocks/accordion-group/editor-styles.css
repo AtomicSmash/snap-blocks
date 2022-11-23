@@ -1,0 +1,14 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Do NOT include @tailwind base styles as there would be lots of duplication.
+ * these styles should be included in a theme/ site global stylesheet.
+ */
+@config "./tailwind.editor.config.cjs";
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+.wp-block-snap-blocks-accordion-group .block-list-appender {
+	position: static;
+}
