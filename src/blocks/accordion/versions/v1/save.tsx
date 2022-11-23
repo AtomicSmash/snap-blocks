@@ -13,7 +13,7 @@ import { DownArrow } from "~/svgs";
  *
  * @return {WPElement} Element to render.
  */
-export function save({
+export function Save({
 	attributes,
 }: BlockSaveProps<InterpretedAttributes>): WPElement {
 	const { isInitiallyOpen, accordionId, headerContent, headerElement } =
@@ -47,8 +47,11 @@ export function save({
 				data-state="open"
 				aria-labelledby={`${accordionId}-trigger`}
 				id={`${accordionId}-panel`}
+				className={"accordion-panel"}
 			>
-				<InnerBlocks.Content />
+				<div className="accordion-panel-inner-wrapper">
+					<InnerBlocks.Content />
+				</div>
 			</div>
 		</div>
 	);

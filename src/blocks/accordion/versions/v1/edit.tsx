@@ -29,7 +29,7 @@ import { attributes as definedAttributeOptions } from "./index";
  *
  * @return {WPElement} Element to render.
  */
-export function edit({
+export function Edit({
 	clientId,
 	attributes,
 	setAttributes,
@@ -60,7 +60,7 @@ export function edit({
 					<DropdownMenu
 						popoverProps={{ className: "accordion-heading-element-dropdown" }}
 						icon={<HeadingElementIcon elementType={headerElement} />}
-						label={__("Change title heading element")}
+						label={__("Change title heading element", "snap-blocks")}
 						controls={definedAttributeOptions.headerElement.enum.map(
 							(targetLevel) => {
 								{
@@ -90,13 +90,15 @@ export function edit({
 								setAttributes({ headerContent: newHeaderContent });
 							}}
 							value={headerContent}
-							placeholder={__("Write your accordion header...")}
+							placeholder={__("Write your accordion header…", "snap-blocks")}
 						/>
 						<DownArrow className={"accordion-header-button-icon"} />
 					</div>
 				</HeaderElement>
-				<div>
-					<InnerBlocks />
+				<div className={"accordion-panel"}>
+					<div className="accordion-panel-inner-wrapper">
+						<InnerBlocks />
+					</div>
 				</div>
 			</div>
 		</>
@@ -108,17 +110,17 @@ function getHumanNameOfElement(
 ) {
 	switch (element) {
 		case "h2":
-			return __("Heading 2");
+			return __("Heading 2", "snap-blocks");
 		case "h3":
-			return __("Heading 3");
+			return __("Heading 3", "snap-blocks");
 		case "h4":
-			return __("Heading 4");
+			return __("Heading 4", "snap-blocks");
 		case "h5":
-			return __("Heading 5");
+			return __("Heading 5", "snap-blocks");
 		case "h6":
-			return __("Heading 6");
+			return __("Heading 6", "snap-blocks");
 		case "p":
-			return __("Paragraph");
+			return __("Paragraph", "snap-blocks");
 	}
 }
 
