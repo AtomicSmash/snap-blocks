@@ -1,12 +1,12 @@
 import type { InterpretedAttributes as NewInterpretedAttributes } from "../v2/index";
-import { createBlock } from "@wordpress/blocks";
 import { omit } from "lodash";
+import { createBlock } from "@wordpress/blocks";
 import {
 	BlockIsDeprecationEligibleFunction,
 	BlockMigrateDeprecationFunction,
 } from "~/helpers";
-import { edit } from "./edit"; // Example of what to do if property has been updated in the new version.
-import { save } from "./save";
+import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
+import { Save } from "./save";
 
 /**
  * Block attributes.
@@ -80,13 +80,13 @@ export type Supports = typeof supports;
 const migrate: BlockMigrateDeprecationFunction<
 	InterpretedAttributes,
 	NewInterpretedAttributes
-> = (attributes) => {
+> = (migrateAttributes) => {
 	return [
-		omit(attributes, "url"),
+		omit(migrateAttributes, "url"),
 		[
 			createBlock("core/image", {
 				sizeSlug: "large",
-				url: attributes.url,
+				url: migrateAttributes.url,
 			}),
 		],
 	];
@@ -111,8 +111,8 @@ export default {
 	supports,
 	migrate,
 	isEligible,
-	edit,
-	save,
+	edit: Edit,
+	save: Save,
 };
 
 /*

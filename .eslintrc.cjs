@@ -20,11 +20,34 @@ const commonRules = {
 	],
 	"import/no-duplicates": "warn",
 	"no-console": ["warn", { allow: ["warn", "error"] }],
+	"prettier/prettier": "off",
 };
+
+const sharedExtends = [
+	"eslint:recommended",
+	"plugin:import/recommended",
+	"plugin:@wordpress/eslint-plugin/recommended",
+];
 
 module.exports = {
 	root: true,
-	ignorePatterns: ["node_modules/**/*", "build/**/*"],
+	ignorePatterns: [
+		"node_modules/**/*",
+		"build/**/*",
+		"tailwind.config.cjs",
+		"tailwind.*.config.cjs",
+	],
+	extends: [
+		...sharedExtends,
+		"prettier", // Not included in shared configs because it must always be last.
+	],
+	plugins: ["import", "node"],
+	env: {
+		browser: true,
+		es6: true,
+		node: true,
+	},
+	rules: commonRules,
 	settings: {
 		"import/resolver": {
 			node: {
@@ -34,47 +57,30 @@ module.exports = {
 				alwaysTryTypes: true,
 			},
 		},
-		"import/parsers": {
-			["@typescript-eslint/parser"]: [".ts", ".tsx", ".d.ts"],
-		},
 	},
 	overrides: [
 		{
-			files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
-			extends: ["eslint:recommended", "plugin:import/recommended", "prettier"],
-			plugins: ["import", "node"],
+			files: ["**/*.cjs"],
 			env: {
-				browser: true,
 				commonjs: true,
-				es6: true,
-				node: true,
+				es6: false,
 			},
-			rules: commonRules,
 		},
 		{
 			files: ["**/*.ts", "**/*.tsx"],
 			parser: "@typescript-eslint/parser",
-			plugins: ["node", "@typescript-eslint"],
-			env: {
-				browser: true,
-				commonjs: true,
-				es6: true,
-				node: true,
-			},
+			plugins: ["@typescript-eslint"],
 			extends: [
-				"eslint:recommended",
-				"plugin:import/recommended",
 				"plugin:@typescript-eslint/recommended",
 				"plugin:@typescript-eslint/recommended-requiring-type-checking",
 				"plugin:import/typescript",
-				"prettier",
+				"prettier", // Not included in shared configs because it must always be last.
 			],
 			parserOptions: {
 				tsconfigRootDir: __dirname,
 				project: ["./tsconfig.json"],
 			},
 			rules: {
-				...commonRules,
 				"@typescript-eslint/strict-boolean-expressions": [
 					2,
 					{
@@ -82,6 +88,10 @@ module.exports = {
 						allowNumber: false,
 					},
 				],
+				// Don't require redundant JSDoc types in TypeScript files.
+				"jsdoc/require-param": "off",
+				"jsdoc/require-param-type": "off",
+				"jsdoc/require-returns-type": "off",
 			},
 		},
 	],
