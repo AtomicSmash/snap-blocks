@@ -31,19 +31,15 @@ class AccordionGroup {
 		let isFirstInitiallyOpenAccordion = true;
 		for (const accordionElement of accordionsInGroup) {
 			const shouldTryToRemainOpen =
-				typeof accordionElement.dataset.isInitiallyOpen === "string"
-					? accordionElement.dataset.isInitiallyOpen === "true"
-					: false;
+				accordionElement.dataset.isInitiallyOpen === "true";
 			let isInitiallyOpen: boolean;
 			if (this.allowMultipleOpenAccordions) {
 				isInitiallyOpen = shouldTryToRemainOpen;
+			} else if (isFirstInitiallyOpenAccordion) {
+				isInitiallyOpen = true;
+				isFirstInitiallyOpenAccordion = false;
 			} else {
-				if (isFirstInitiallyOpenAccordion) {
-					isInitiallyOpen = true;
-					isFirstInitiallyOpenAccordion = false;
-				} else {
-					isInitiallyOpen = false;
-				}
+				isInitiallyOpen = false;
 			}
 			const accordion = new Accordion(accordionElement, this);
 			if (!isInitiallyOpen) {
@@ -54,12 +50,23 @@ class AccordionGroup {
 	}
 }
 
+function getTimeInMilliseconds(time: string) {
+	if (new RegExp("ms$", "ig").test(time)) {
+		return Number(time.substring(0, time.length - 2));
+	}
+	if (new RegExp("s$", "ig").test(time)) {
+		return Number(time.substring(0, time.length - 1)) * 1000;
+	}
+	throw new Error(`Time didn't end with ms or s so was not correctly parsed.`);
+}
+
 class Accordion {
 	private id: string;
 	private state: "open" | "collapsed";
 	private accordionGroup: AccordionGroup;
 	public trigger: HTMLButtonElement;
 	public panel: HTMLDivElement;
+	private closeTimeout: NodeJS.Timeout | null = null;
 
 	constructor(accordion: HTMLElement, accordionGroup: AccordionGroup) {
 		const accordionId = accordion.id;
@@ -86,6 +93,10 @@ class Accordion {
 		this.trigger.addEventListener("click", () => {
 			this.toggle();
 		});
+
+		this.panel.style.height = this.panel.style.height = getComputedStyle(
+			this.panel
+		).getPropertyValue("height");
 	}
 	public getId() {
 		return this.id;
@@ -94,21 +105,36 @@ class Accordion {
 		return this.state;
 	}
 	public open() {
-		this.state = "open";
-		this.panel.removeAttribute("hidden");
-		this.panel.setAttribute("data-state", "open");
-		this.trigger.setAttribute("aria-expanded", "true");
-		this.trigger.setAttribute("data-state", "open");
 		if (!this.accordionGroup.allowMultipleOpenAccordions) {
 			this.accordionGroup.closeAllAccordions();
+			if (this.closeTimeout) {
+				clearTimeout(this.closeTimeout);
+			}
 		}
+		this.panel.style.display = "";
+		// Set timeout is used to push these changes to the next tick so the transition occurs as expected.
+		setTimeout(() => {
+			this.state = "open";
+			this.panel.removeAttribute("aria-hidden");
+			this.panel.setAttribute("data-state", "open");
+			this.trigger.setAttribute("aria-expanded", "true");
+			this.trigger.setAttribute("data-state", "open");
+		}, 1);
 	}
 	public close() {
 		this.state = "collapsed";
-		this.panel.setAttribute("hidden", "");
+		this.panel.setAttribute("aria-hidden", "true");
 		this.panel.setAttribute("data-state", "collapsed");
 		this.trigger.setAttribute("aria-expanded", "false");
 		this.trigger.setAttribute("data-state", "collapsed");
+		const accordionOpenCloseTiming = getTimeInMilliseconds(
+			getComputedStyle(this.panel).getPropertyValue(
+				"--accordion-open-close-timing"
+			)
+		);
+		this.closeTimeout = setTimeout(() => {
+			this.panel.style.display = "none";
+		}, accordionOpenCloseTiming);
 	}
 	public toggle() {
 		if (this.state === "open") {
@@ -116,6 +142,14 @@ class Accordion {
 		} else {
 			this.open();
 		}
+	}
+	public debug() {
+		// eslint-disable-next-line no-console
+		console.log({
+			id: this.id,
+			state: this.state,
+			groupId: this.accordionGroup.getId(),
+		});
 	}
 }
 

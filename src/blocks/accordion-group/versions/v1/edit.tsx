@@ -7,7 +7,13 @@ import {
 	InnerBlocks,
 	Inserter,
 } from "@wordpress/block-editor";
-import { CheckboxControl, Panel, PanelBody } from "@wordpress/components";
+import {
+	Button,
+	ButtonGroup,
+	CheckboxControl,
+	Panel,
+	PanelBody,
+} from "@wordpress/components";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -17,7 +23,7 @@ import { CheckboxControl, Panel, PanelBody } from "@wordpress/components";
  *
  * @return {WPElement} Element to render.
  */
-export function edit({
+export function Edit({
 	clientId,
 	attributes,
 	setAttributes,
@@ -59,9 +65,14 @@ function MyButtonBlockAppender({ rootClientId }: { rootClientId: string }) {
 		<Inserter
 			rootClientId={rootClientId}
 			renderToggle={({ onToggle }) => (
-				<button className="accordion-inserter-button" onClick={onToggle}>
-					Add an accordion
-				</button>
+				<ButtonGroup>
+					<Button
+						className="accordion-inserter-button is-primary"
+						onClick={onToggle}
+					>
+						Add an accordion
+					</Button>
+				</ButtonGroup>
 			)}
 			isAppender
 		/>
