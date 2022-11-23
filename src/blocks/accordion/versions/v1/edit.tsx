@@ -84,7 +84,7 @@ export function edit({
 				<HeaderElement>
 					<div className="accordion-header-button">
 						<RichText
-							tagName={"p"}
+							tagName={"span"}
 							className={"accordion-header-button-text"}
 							onChange={(newHeaderContent) => {
 								setAttributes({ headerContent: newHeaderContent });
