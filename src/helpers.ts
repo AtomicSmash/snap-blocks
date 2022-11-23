@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { WPElement } from "@wordpress/element";
 import {
 	createBlock,
@@ -127,6 +128,7 @@ export type BlockMetaData<Attributes extends BlockAttributes> = {
 	 * Core provided categories are: text, media, design, widgets, theme, embed
 	 *
 	 * Plugins and Themes can also register custom block categories.
+	 *
 	 * @see https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/#managing-block-categories
 	 */
 	category?: BlockCategory;
@@ -168,6 +170,7 @@ export type BlockMetaData<Attributes extends BlockAttributes> = {
 	version?: string;
 	/**
 	 * The gettext text domain of the plugin/block. More information can be found in the Text Domain section of the How to Internationalize your Plugin page.
+	 *
 	 * @see https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/
 	 */
 	textdomain?: string;
@@ -202,6 +205,7 @@ export type BlockMetaData<Attributes extends BlockAttributes> = {
 	 * Using CSS, a theme developer can target the class name for the block style if it is selected.
 	 *
 	 * Plugins and Themes can also register custom block style for existing blocks.
+	 *
 	 * @see https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/#block-styles
 	 */
 	styles?: {

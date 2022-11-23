@@ -24,7 +24,7 @@ import { __ } from "@wordpress/i18n";
  *
  * @return {WPElement} Element to render.
  */
-export function edit({
+export function Edit({
 	attributes,
 	setAttributes,
 }: BlockEditProps<InterpretedAttributes>): WPElement {
@@ -76,7 +76,7 @@ export function edit({
 					}}
 					allowedFormats={["core/bold", "core/italic"]}
 					value={title}
-					placeholder={__("Write your title...")}
+					placeholder={__("Write your title…")}
 				/>
 				<TextControl
 					label="Image URL"

@@ -12,7 +12,7 @@ import { useBlockProps, RichText } from "@wordpress/block-editor";
  *
  * @return {WPElement} Element to render.
  */
-export function save({
+export function Save({
 	attributes,
 }: BlockSaveProps<InterpretedAttributes>): WPElement {
 	const { title, url, align, size } = attributes;

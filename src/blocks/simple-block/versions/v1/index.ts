@@ -1,5 +1,5 @@
-import { edit } from "./edit"; // Example of what to do if property has been updated in the new version.
-import { save } from "./save";
+import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
+import { Save } from "./save";
 
 /**
  * Block attributes.
@@ -66,6 +66,6 @@ export type Supports = typeof supports;
 export default {
 	attributes,
 	supports,
-	edit,
-	save,
+	edit: Edit,
+	save: Save,
 };
