@@ -35,7 +35,7 @@ export function save({
 					className="accordion-header-button"
 				>
 					<RichText.Content
-						tagName={"p"}
+						tagName={"span"}
 						className={"accordion-header-button-text"}
 						value={headerContent}
 					/>
