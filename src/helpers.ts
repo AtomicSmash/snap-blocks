@@ -4,6 +4,7 @@ import {
 	registerBlockType as wordpressRegisterBlockType,
 	registerBlockCollection,
 } from "@wordpress/blocks";
+import { ASCircleLogo } from "./svgs";
 
 export type BlockCategory =
 	| "text"
@@ -540,6 +541,6 @@ export function registerBlockType<
 export function registerSnapBlocksCollection() {
 	registerBlockCollection("snap-blocks", {
 		title: "Snap blocks",
-		icon: "smiley",
+		icon: ASCircleLogo,
 	});
 }

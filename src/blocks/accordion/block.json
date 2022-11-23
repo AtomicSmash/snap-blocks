@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "snap-blocks/accordion",
+	"parent": ["snap-blocks/accordion-group"],
+	"version": "1.0.0",
+	"title": "Accordion",
+	"category": "theme",
+	"icon": "admin-collapse",
+	"description": "A block which has a header and collapsible content.",
+	"textdomain": "snap-blocks",
+	"keywords": ["snap", "accordion"],
+	"script": "accordion-script",
+	"editorScript": "accordion-editor-script",
+	"viewScript": "accordion-view-script",
+	"style": "accordion-styles",
+	"editorStyle": "accordion-editor-styles"
+}
