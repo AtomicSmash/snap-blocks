@@ -90,6 +90,7 @@ export function Edit({
 								setAttributes({ headerContent: newHeaderContent });
 							}}
 							value={headerContent}
+							allowedFormats={["core/bold", "core/italic"]}
 							placeholder={__("Write your accordion header…", "snap-blocks")}
 						/>
 						<DownArrow className={"accordion-header-button-icon"} />
