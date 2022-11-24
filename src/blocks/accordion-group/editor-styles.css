@@ -5,7 +5,7 @@
 	--border-base-radius: 0.625rem;
 	--margin-between-blocks: 1rem;
 	--padding-base: 1rem;
-	--font-size-base: 1rem;
+	--font-size-base: 1.25rem;
 	--font-family-base: sans-serif;
 }
 @media screen and (min-width: 768px) {
@@ -29,9 +29,15 @@
 	position: static;
 }
 .wp-block-snap-blocks-accordion-group .components-button-group {
-	background-color: var(--color-primary-faded);
-	border: 1px solid var(--color-primary);
+	background-color: #f6f7f7;
+	border: 1px solid #c3c4c7;
 	padding: var(--padding-base);
 	text-align: center;
 	width: 100%;
+}
+
+.wp-block-snap-blocks-accordion-group
+	.components-button-group
+	.components-button {
+	box-shadow: none;
 }
