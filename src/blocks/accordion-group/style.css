@@ -1,12 +1,4 @@
 /**
  * The following styles get applied both on the front of your site
  * and in the editor.
- *
- * Do NOT include @tailwind base styles as there would be lots of duplication.
- * these styles should be included in a theme/ site global stylesheet.
  */
-
-@config "./tailwind.block.config.cjs";
-@tailwind components;
-@tailwind utilities;
-@tailwind variants;
