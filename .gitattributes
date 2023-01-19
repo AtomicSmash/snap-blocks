@@ -14,6 +14,5 @@ package.json export-ignore
 postcss.config.cjs export-ignore
 readme.txt export-ignore
 SETUP.md export-ignore
-tailwind.config.cjs export-ignore
 tsconfig.json export-ignore
 webpack.config.mjs export-ignore

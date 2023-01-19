@@ -31,12 +31,7 @@ const sharedExtends = [
 
 module.exports = {
 	root: true,
-	ignorePatterns: [
-		"node_modules/**/*",
-		"build/**/*",
-		"tailwind.config.cjs",
-		"tailwind.*.config.cjs",
-	],
+	ignorePatterns: ["node_modules/**/*", "build/**/*"],
 	extends: [
 		...sharedExtends,
 		"prettier", // Not included in shared configs because it must always be last.
