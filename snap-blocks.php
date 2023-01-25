@@ -23,14 +23,16 @@ define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'build/blocks/');
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function block_test_block_test_block_init() {
+function blocks_init() {
 		register_block_assets_by_block_name();
-    $blocksFolders = array_diff(scandir(BLOCKS_DIR), array('..', '.'));
+    $blocksFolders = array_filter(array_diff(scandir(BLOCKS_DIR), array('..', '.')), function($file_or_directory) {
+			return is_dir(BLOCKS_DIR . $file_or_directory);
+		});
     foreach ($blocksFolders as $block) {
         register_block_type( __DIR__ . '/build/blocks/' . $block . '/block.json' );
     }
 }
-add_action( 'init', 'block_test_block_test_block_init' );
+add_action( 'init', 'blocks_init' );
 
 if (!function_exists('str_starts_with')) {
 	function str_starts_with($haystack, $needle) {
