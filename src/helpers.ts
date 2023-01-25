@@ -33,14 +33,48 @@ export type AttributesObject =
 	  } & (
 			| {
 					type: AttributeTypes | AttributeTypes[];
-					enum?: boolean[] | number[] | string[];
+					enum?:
+						| ReadonlyArray<boolean>
+						| ReadonlyArray<number>
+						| ReadonlyArray<string>;
 			  }
 			| {
 					type?: AttributeTypes | AttributeTypes[];
-					enum: boolean[] | number[] | string[];
+					enum:
+						| ReadonlyArray<boolean>
+						| ReadonlyArray<number>
+						| ReadonlyArray<string>;
 			  }
 	  );
-export type BlockAttributes = Record<string, AttributesObject>;
+type ReadonlyRecursive<T> = {
+	[k in keyof T]: T[k] extends Record<string, any>
+		? ReadonlyRecursive<T[k]>
+		: T[k];
+};
+export type InterpretAttributes<
+	Attributes extends Record<string, ReadonlyRecursive<AttributesObject>>
+> = {
+	[Property in keyof Attributes]: Attributes[Property] extends {
+		type: "string";
+	}
+		? string
+		: Attributes[Property] extends { type: "boolean" }
+		? boolean
+		: Attributes[Property] extends { type: "object" }
+		? Record<string, any>
+		: Attributes[Property] extends { type: "null" }
+		? null
+		: Attributes[Property] extends { type: "array" }
+		? any[]
+		: Attributes[Property] extends { type: "integer" }
+		? number
+		: Attributes[Property] extends { type: "number" }
+		? number
+		: Attributes[Property]["enum"] extends undefined
+		? undefined
+		: NonNullable<Attributes[Property]["enum"]>[number];
+};
+export type BlockAttributes = Readonly<Record<string, AttributesObject>>;
 export type BlockSupports = Record<string, any> & {
 	anchor?: boolean;
 	align?: boolean | ("wide" | "full" | "left" | "center" | "right")[];
@@ -522,7 +556,10 @@ export type LoosenTypeOfObject<Type extends Record<string, any>> = {
 
 export function registerBlockType<
 	Attributes extends BlockAttributes = Record<string, never>,
-	InterpretedAttributes extends Record<string, any> = Record<string, never>,
+	InterpretedAttributes extends Record<
+		string,
+		any
+	> = InterpretAttributes<Attributes>,
 	AllPossibleInterpretedAttributes extends Record<
 		string,
 		any
