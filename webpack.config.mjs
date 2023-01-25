@@ -1,9 +1,9 @@
 import { exec } from "child_process";
 import { readdir } from "node:fs/promises";
-import { resolve } from "node:path";
+import { resolve as resolvePath } from "node:path";
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
 import defaultConfig from "@wordpress/scripts/config/webpack.config.js";
-import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 
 export async function execute(command) {
 	return new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ function toCamelCase(text) {
 }
 
 async function getAllBlocksJSEntryPoints() {
-	let entryPoints = {
+	const entryPoints = {
 		helpers: {
 			import: "./src/helpers.ts",
 			filename: `helpers${isProduction ? `.[contenthash]` : ""}.js`,
@@ -39,7 +39,7 @@ async function getAllBlocksJSEntryPoints() {
 			.filter((dirent) => dirent.isDirectory())
 			.map((dirent) => dirent.name);
 	});
-	for (let block of blockFolders) {
+	for (const block of blockFolders) {
 		const blockFiles = await readdir(`./src/blocks/${block}`, {
 			withFileTypes: true,
 		}).then((blockDirFiles) => {
@@ -48,7 +48,7 @@ async function getAllBlocksJSEntryPoints() {
 				.map((file) => file.name)
 				.filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
 		});
-		for (let blockJSFile of blockFiles) {
+		for (const blockJSFile of blockFiles) {
 			let blockBonusScriptNumber = 1;
 			const [filename] = blockJSFile.split(".");
 			let entryName;
@@ -93,7 +93,7 @@ export default [
 	{
 		...config,
 		output: {
-			path: resolve(process.cwd(), "build"),
+			path: resolvePath(process.cwd(), "build"),
 			clean: true,
 		},
 		plugins: [
