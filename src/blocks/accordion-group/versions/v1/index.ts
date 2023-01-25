@@ -1,3 +1,4 @@
+import { InterpretAttributes } from "~/helpers";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
 
@@ -8,15 +9,7 @@ import { Save } from "./save";
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/ The WordPress documentation}
  */
-export const attributes: {
-	isMultiple: {
-		type: "boolean";
-		default: false;
-	};
-	accordionGroupId: {
-		type: "string";
-	};
-} = {
+export const attributes = {
 	isMultiple: {
 		type: "boolean",
 		default: false,
@@ -24,12 +17,9 @@ export const attributes: {
 	accordionGroupId: {
 		type: "string",
 	},
-};
+} as const;
 export type Attributes = typeof attributes;
-export type InterpretedAttributes = {
-	isMultiple: boolean;
-	accordionGroupId: string;
-};
+export type InterpretedAttributes = InterpretAttributes<Attributes>;
 
 /**
  * Block supports.
@@ -38,7 +28,7 @@ export type InterpretedAttributes = {
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/ The WordPress documentation}
  */
-export const supports = {};
+export const supports = {} as const;
 export type Supports = typeof supports;
 
 export default {

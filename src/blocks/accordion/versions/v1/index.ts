@@ -1,3 +1,4 @@
+import { InterpretAttributes } from "~/helpers";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
 
@@ -8,22 +9,7 @@ import { Save } from "./save";
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/ The WordPress documentation}
  */
-export const attributes: {
-	isInitiallyOpen: {
-		type: "boolean";
-		default: false;
-	};
-	accordionId: {
-		type: "string";
-	};
-	headerContent: {
-		type: "string";
-	};
-	headerElement: {
-		enum: ["h2", "h3", "h4", "h5", "h6", "p"];
-		default: "h2";
-	};
-} = {
+export const attributes = {
 	isInitiallyOpen: {
 		type: "boolean",
 		default: false,
@@ -38,14 +24,9 @@ export const attributes: {
 		enum: ["h2", "h3", "h4", "h5", "h6", "p"],
 		default: "h2",
 	},
-};
+} as const;
 export type Attributes = typeof attributes;
-export type InterpretedAttributes = {
-	isInitiallyOpen: boolean;
-	accordionId: string;
-	headerContent: string;
-	headerElement: "h2" | "h3" | "h4" | "h5" | "h6" | "p";
-};
+export type InterpretedAttributes = InterpretAttributes<Attributes>;
 
 /**
  * Block supports.
@@ -54,7 +35,7 @@ export type InterpretedAttributes = {
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/ The WordPress documentation}
  */
-export const supports = {};
+export const supports = {} as const;
 export type Supports = typeof supports;
 
 export default {
