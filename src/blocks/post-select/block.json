@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "snap-blocks/post-select",
+	"version": "0.1.0",
+	"title": "Post select",
+	"category": "theme",
+	"icon": "smiley",
+	"description": "A block to manually select and display a group of posts.",
+	"textdomain": "snap-blocks",
+	"keywords": ["snap"],
+	"script": "post-select-script",
+	"editorScript": "post-select-editor-script",
+	"viewScript": "post-select-view-script",
+	"style": "post-select-styles",
+	"editorStyle": "post-select-editor-styles"
+}

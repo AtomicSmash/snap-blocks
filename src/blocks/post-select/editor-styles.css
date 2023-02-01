@@ -1,0 +1,71 @@
+/**
+ * The following styles get applied inside the editor only.
+ */
+
+.draggable-list {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid gray;
+}
+.draggable-list-item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	color: #3d3d3d;
+	user-select: none;
+	position: relative;
+}
+.draggable-list-item:hover {
+	background: rgb(3 107 252);
+	color: #fff;
+}
+.draggable-list-item .drag-handle,
+.draggable-list-item .remove-button {
+	width: 1.5rem;
+	height: 100%;
+	padding: 0;
+	line-height: 0;
+}
+.draggable-list-item .drag-handle svg,
+.draggable-list-item .remove-button svg {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.draggable-list-item .drag-handle {
+	cursor: grab;
+}
+.draggable-list-item .drag-handle:active {
+	cursor: grabbing;
+}
+.draggable-list-item.being-dragged {
+	opacity: 0.5;
+	background: #eee;
+	color: #3d3d3d;
+}
+.drag-zone-top,
+.drag-zone-bottom {
+	display: none;
+	position: absolute;
+	height: 50%;
+	width: 100%;
+}
+.is-dragging .drag-zone-top,
+.is-dragging .drag-zone-bottom {
+	display: block;
+}
+.drag-zone-top {
+	top: 0;
+}
+.drag-zone-bottom {
+	bottom: 0;
+}
+.draggable-list-item:first-child .drag-zone-top {
+	height: 150%;
+	top: -100%;
+}
+.draggable-list-item:last-child .drag-zone-bottom {
+	height: 150%;
+	bottom: -100%;
+}

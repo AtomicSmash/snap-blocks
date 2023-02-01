@@ -21,55 +21,63 @@ export type AttributeTypes =
 	| "string"
 	| "integer"
 	| "number";
-export type AttributesObject =
-	| {
-			source?: "attribute" | "text" | "html" | "query" | "meta";
-			selector?: string;
-			attribute?: string;
-			multiline?: string;
-			query?: Record<string, any>;
-			meta?: string;
-			default?: any;
-	  } & (
-			| {
-					type: AttributeTypes | AttributeTypes[];
-					enum?:
-						| ReadonlyArray<boolean>
-						| ReadonlyArray<number>
-						| ReadonlyArray<string>;
-			  }
-			| {
-					type?: AttributeTypes | AttributeTypes[];
-					enum:
-						| ReadonlyArray<boolean>
-						| ReadonlyArray<number>
-						| ReadonlyArray<string>;
-			  }
-	  );
+export type AttributesObject = {
+	source?: "attribute" | "text" | "html" | "query" | "meta";
+	selector?: string;
+	attribute?: string;
+	multiline?: string;
+	query?: Record<string, AttributesObject>;
+	meta?: string;
+	default?: any;
+	enum?: ReadonlyArray<boolean> | ReadonlyArray<number> | ReadonlyArray<string>;
+	type: AttributeTypes | AttributeTypes[];
+	items?: {
+		type: AttributeTypes;
+	};
+};
 type ReadonlyRecursive<T> = {
 	[k in keyof T]: T[k] extends Record<string, any>
 		? ReadonlyRecursive<T[k]>
 		: T[k];
 };
+type InheritType<Type extends { type: string | string[] }> = Type extends {
+	type: string[];
+}
+	? any[]
+	: Type extends {
+			type: "string";
+	  }
+	? string
+	: Type extends { type: "boolean" }
+	? boolean
+	: Type extends { type: "object" }
+	? Record<string, any>
+	: Type extends { type: "null" }
+	? null
+	: Type extends { type: "array" }
+	? any[]
+	: Type extends { type: "integer" }
+	? number
+	: Type extends { type: "number" }
+	? number
+	: never;
+
 export type InterpretAttributes<
 	Attributes extends Record<string, ReadonlyRecursive<AttributesObject>>
 > = {
 	[Property in keyof Attributes]: Attributes[Property] extends {
-		type: "string";
+		type: "array";
+		query: NonNullable<Attributes[Property]["query"]>;
 	}
-		? string
-		: Attributes[Property] extends { type: "boolean" }
-		? boolean
-		: Attributes[Property] extends { type: "object" }
-		? Record<string, any>
-		: Attributes[Property] extends { type: "null" }
-		? null
-		: Attributes[Property] extends { type: "array" }
-		? any[]
-		: Attributes[Property] extends { type: "integer" }
-		? number
-		: Attributes[Property] extends { type: "number" }
-		? number
+		? {
+				[SubProperty in keyof NonNullable<
+					Attributes[Property]["query"]
+				>]: InheritType<
+					NonNullable<Attributes[Property]["query"]>[SubProperty]
+				>;
+		  }[]
+		: Attributes[Property] extends { type: string }
+		? InheritType<Attributes[Property]>
 		: Attributes[Property]["enum"] extends undefined
 		? undefined
 		: NonNullable<Attributes[Property]["enum"]>[number];
