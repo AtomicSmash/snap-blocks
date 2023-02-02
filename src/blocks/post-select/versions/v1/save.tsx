@@ -21,7 +21,11 @@ export function Save({
 		<div {...blockProps}>
 			{selectedPosts.map((selectedPost) => {
 				return (
-					<article key={selectedPost.id} data-post-id={selectedPost.id}>
+					<article
+						className="selected-post"
+						key={selectedPost.id}
+						data-post-id={selectedPost.id}
+					>
 						<h3>{selectedPost.title}</h3>
 					</article>
 				);

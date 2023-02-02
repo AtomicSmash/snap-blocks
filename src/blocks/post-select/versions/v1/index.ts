@@ -12,11 +12,12 @@ import { Save } from "./save";
 export const attributes = {
 	selectedPosts: {
 		type: "array",
+		source: "query",
+		selector: "article.selected-post",
 		query: {
 			id: {
 				type: "string",
 				source: "attribute",
-				selector: "article.selected-post",
 				attribute: "data-post-id",
 			},
 			title: {
