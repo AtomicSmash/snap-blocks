@@ -637,11 +637,6 @@ export function CustomMultipleSelectList<
 						key={listItem.id}
 						onClick={(event) => {
 							event.preventDefault();
-							console.log({
-								isSelected: listItem.isSelected,
-								type: listItem.isSelected ? "remove" : "add",
-								listItem,
-							});
 							updateListCallback(
 								listItem.isSelected ? "remove" : "add",
 								listItem
