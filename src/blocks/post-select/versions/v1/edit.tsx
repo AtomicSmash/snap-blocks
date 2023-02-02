@@ -354,9 +354,6 @@ type DragAction<ListItem> =
 			updateListCallback: (type: "update_list", listOrItem: ListItem[]) => void;
 	  }
 	| {
-			type: "reset_drag_state";
-	  }
-	| {
 			type: "remove_from_list";
 			updateListCallback: (
 				type: "add" | "remove",
@@ -448,17 +445,13 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 				const newList = doubledUpArray.filter(
 					(value): value is ListItem => value !== null
 				);
-				newState = currentState; // This will get updated on rerender triggered by the below update callback.
-				action.updateListCallback("update_list", newList);
-				break;
-			}
-			case "reset_drag_state": {
 				newState = {
 					listItemBeingDragged: null,
 					draggedItemOriginalPosition: null,
 					draggedItemFalseOrder: null,
-					list: currentState.list,
+					list: currentState.list, // This will get updated on rerender triggered by the below update callback.
 				};
+				action.updateListCallback("update_list", newList);
 				break;
 			}
 			case "remove_from_list": {
@@ -526,13 +519,6 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 									newOrder: index * 2 - 1,
 								});
 							}}
-							onDrop={() =>
-								setListState({
-									type: "end_being_dragged",
-									falseOrder: listState.draggedItemFalseOrder,
-									updateListCallback,
-								})
-							}
 						></div>
 						<div
 							className="drag-handle"
@@ -547,7 +533,9 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 							}
 							onDragEnd={() =>
 								setListState({
-									type: "reset_drag_state",
+									type: "end_being_dragged",
+									falseOrder: listState.draggedItemFalseOrder,
+									updateListCallback,
 								})
 							}
 							draggable
@@ -593,13 +581,6 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 									newOrder: index * 2 + 1,
 								});
 							}}
-							onDrop={() =>
-								setListState({
-									type: "end_being_dragged",
-									falseOrder: listState.draggedItemFalseOrder,
-									updateListCallback,
-								})
-							}
 						></div>
 					</div>
 				);
