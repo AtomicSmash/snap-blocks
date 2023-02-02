@@ -217,7 +217,11 @@ export function Edit({
 								key={selectedPost.id}
 								data-post-id={selectedPost.id}
 							>
-								<h3>{selectedPost.title}</h3>
+								<h3>
+									{selectedPost.title === ""
+										? "(no title)"
+										: selectedPost.title}
+								</h3>
 							</article>
 						);
 					})
@@ -551,7 +555,7 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 								<path d="M8 7h2V5H8v2zm0 6h2v-2H8v2zm0 6h2v-2H8v2zm6-14v2h2V5h-2zm0 8h2v-2h-2v2zm0 6h2v-2h-2v2z"></path>
 							</svg>
 						</div>
-						<span>{listItem.title}</span>
+						<span>{listItem.title === "" ? "(no title)" : listItem.title}</span>
 						<button
 							className="remove-button"
 							onClick={() => {
@@ -639,7 +643,7 @@ export function CustomMultipleSelectList<
 								<path d="M16.7 7.1l-6.3 8.5-3.3-2.5-.9 1.2 4.5 3.4L17.9 8z"></path>
 							</svg>
 						) : null}{" "}
-						{listItem.title}
+						{listItem.title === "" ? "(no title)" : listItem.title}
 					</button>
 				);
 			})}
