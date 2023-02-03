@@ -102,6 +102,18 @@ export function Edit({
 			<InspectorControls>
 				<Panel>
 					<PanelBody title="Select posts">
+						<BaseControl
+							id={useInstanceId(BaseControl, "draggable-list-id-")}
+							label={"Selected posts"}
+							help={
+								"You can drag and drop the posts above to change the order that they appear in."
+							}
+						>
+							<DraggableList<InterpretedAttributes["selectedPosts"][number]>
+								list={selectedPosts}
+								updateListCallback={updateSelectedPosts}
+							/>
+						</BaseControl>
 						<SelectControl<typeof postType>
 							label="Post Type"
 							value={postType}
@@ -172,18 +184,6 @@ export function Edit({
 							value={searchInput}
 							onChange={setSearchInput}
 						/>
-						<BaseControl
-							id={useInstanceId(BaseControl, "draggable-list-id-")}
-							label={"Selected posts"}
-							help={
-								"You can drag and drop the posts above to change the order that they appear in."
-							}
-						>
-							<DraggableList<InterpretedAttributes["selectedPosts"][number]>
-								list={selectedPosts}
-								updateListCallback={updateSelectedPosts}
-							/>
-						</BaseControl>
 						<BaseControl
 							id={useInstanceId(BaseControl, "custom-multiple-select-list-id-")}
 							label={"Searched posts"}
