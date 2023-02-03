@@ -14,11 +14,7 @@ import {
 	Spinner,
 } from "@wordpress/components";
 import { useInstanceId } from "@wordpress/compose";
-import {
-	store as coreStore,
-	Taxonomy,
-	useEntityRecords,
-} from "@wordpress/core-data";
+import { store as coreStore, Taxonomy } from "@wordpress/core-data";
 import { useSelect } from "@wordpress/data";
 import { useReducer, useState, useEffect } from "@wordpress/element";
 
@@ -38,7 +34,7 @@ export function Edit({
 	const blockProps = useBlockProps();
 	const { filteredPostTypes, mappedTaxonomies } = usePostTypes();
 	const [searchInput, setSearchInput] = useState("");
-	const [postType, setPostType] = useState("post");
+	const [selectedPostType, setSelectedPostType] = useState("any");
 	const [taxonomyAndTermSlugs, setTaxonomyAndTermSlugs] = useState<string[]>(
 		[]
 	);
@@ -54,14 +50,24 @@ export function Edit({
 		return accumulator;
 	}, {});
 
-	const { records: searchedPosts, isResolving } = useEntityRecords<
-		Post<"view"> | Page<"view">
-	>("postType", postType, {
-		per_page: -1,
-		context: "view",
-		...mappedTerms,
-		search: searchInput,
-	});
+	const posts = useSelect(
+		(select) => {
+			const returnObject: Record<string, (Post<"view"> | Page<"view">)[]> = {};
+			if (filteredPostTypes) {
+				for (const postType of filteredPostTypes) {
+					returnObject[postType.slug] =
+						select(coreStore).getEntityRecords("postType", postType.slug, {
+							per_page: -1,
+							context: "view",
+							...mappedTerms,
+							search: searchInput,
+						}) ?? [];
+				}
+			}
+			return returnObject;
+		},
+		[filteredPostTypes]
+	);
 
 	function updateSelectedPosts(
 		type: "add" | "remove" | "update_list",
@@ -114,21 +120,28 @@ export function Edit({
 								updateListCallback={updateSelectedPosts}
 							/>
 						</BaseControl>
-						<SelectControl<typeof postType>
+						<SelectControl<typeof selectedPostType>
 							label="Post Type"
-							value={postType}
-							options={filteredPostTypes?.map(({ labels, slug }) => ({
-								label:
-									labels.singular_name ??
-									"Error: Unable to retrieve post type name.",
-								value: slug,
-							}))}
+							value={selectedPostType}
+							options={
+								filteredPostTypes
+									? [
+											...filteredPostTypes.map(({ labels, slug }) => ({
+												label:
+													labels.singular_name ??
+													"Error: Unable to retrieve post type name.",
+												value: slug,
+											})),
+											{ label: "Any", value: "any" },
+									  ]
+									: [{ label: "Any", value: "any" }]
+							}
 							onChange={(newPostType) => {
-								setPostType(newPostType);
+								setSelectedPostType(newPostType);
 							}}
 						/>
 						{mappedTaxonomies
-							? mappedTaxonomies[postType]?.map((taxonomy) => {
+							? mappedTaxonomies[selectedPostType]?.map((taxonomy) => {
 									if (!taxonomy.terms || taxonomy.terms.length === 0) {
 										return null;
 									}
@@ -190,7 +203,27 @@ export function Edit({
 						>
 							<CustomMultipleSelectList
 								list={
-									searchedPosts?.map((searchedPost) => ({
+									(selectedPostType !== "any"
+										? posts[selectedPostType]
+										: Object.values(posts)
+												.flat(1)
+												.sort((a, b) => {
+													if (a.date === null || b.date === null) {
+														throw new Error(
+															"Error getting the published date."
+														);
+													}
+													const dateTimeA = new Date(a.date).getTime();
+													const dateTimeB = new Date(b.date).getTime();
+													if (dateTimeA < dateTimeB) {
+														return -1;
+													}
+													if (dateTimeA > dateTimeB) {
+														return 1;
+													}
+													return 0;
+												})
+									)?.map((searchedPost) => ({
 										id: `${searchedPost.id}`,
 										title: searchedPost.title.rendered,
 										isSelected: !!selectedPosts.find((selectedPost) => {
@@ -201,7 +234,6 @@ export function Edit({
 										}),
 									})) ?? []
 								}
-								isResolving={isResolving}
 								updateListCallback={updateSelectedPosts}
 							/>
 						</BaseControl>
