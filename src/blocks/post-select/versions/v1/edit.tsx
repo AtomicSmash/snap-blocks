@@ -108,18 +108,6 @@ export function Edit({
 			<InspectorControls>
 				<Panel>
 					<PanelBody title="Select posts">
-						<BaseControl
-							id={useInstanceId(BaseControl, "draggable-list-id-")}
-							label={"Selected posts"}
-							help={
-								"You can drag and drop the posts above to change the order that they appear in."
-							}
-						>
-							<DraggableList<InterpretedAttributes["selectedPosts"][number]>
-								list={selectedPosts}
-								updateListCallback={updateSelectedPosts}
-							/>
-						</BaseControl>
 						<SelectControl<typeof selectedPostType>
 							label="Post Type"
 							value={selectedPostType}
@@ -236,6 +224,20 @@ export function Edit({
 								}
 								updateListCallback={updateSelectedPosts}
 								itemClassName={({ isSelected }) => (isSelected ? `hide` : "")}
+							/>
+						</BaseControl>
+						<BaseControl
+							id={useInstanceId(BaseControl, "draggable-list-id-")}
+							label={"Selected posts"}
+							help={
+								selectedPosts.length > 0
+									? "You can drag and drop the posts above to change the order that they appear in."
+									: "Use the filters above to select the posts you would like to show in this block."
+							}
+						>
+							<DraggableList<InterpretedAttributes["selectedPosts"][number]>
+								list={selectedPosts}
+								updateListCallback={updateSelectedPosts}
 							/>
 						</BaseControl>
 					</PanelBody>
