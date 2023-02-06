@@ -38,42 +38,6 @@ export function Edit({
 	const [taxonomyAndTermSlugs, setTaxonomyAndTermSlugs] = useState<string[]>(
 		[]
 	);
-	const [mappedTerms, setMappedTerms] = useReducer<
-		Reducer<
-			Record<string, string[] | undefined>,
-			{ taxonomyAndTermSlugs: string[] }
-		>
-	>(
-		(prevState, action) => {
-			return action.taxonomyAndTermSlugs.reduce<
-				Record<string, string[] | undefined>
-			>((accumulator, taxonomyAndTermSlug) => {
-				const [taxonomySlug, TermSlug] = taxonomyAndTermSlug.split("__");
-				if (accumulator[taxonomySlug] === undefined) {
-					accumulator[taxonomySlug] = [];
-				}
-				// @ts-expect-error This is throwing an error because accumulator is not const, but we are doing a check above so it will never be undefined.
-				accumulator[taxonomySlug].push(TermSlug);
-				return accumulator;
-			}, {});
-		},
-		taxonomyAndTermSlugs.reduce<Record<string, string[] | undefined>>(
-			(accumulator, taxonomyAndTermSlug) => {
-				const [taxonomySlug, TermSlug] = taxonomyAndTermSlug.split("__");
-				if (accumulator[taxonomySlug] === undefined) {
-					accumulator[taxonomySlug] = [];
-				}
-				// @ts-expect-error This is throwing an error because accumulator is not const, but we are doing a check above so it will never be undefined.
-				accumulator[taxonomySlug].push(TermSlug);
-				return accumulator;
-			},
-			{}
-		)
-	);
-
-	useEffect(() => {
-		setMappedTerms({ taxonomyAndTermSlugs });
-	}, [taxonomyAndTermSlugs]);
 
 	const posts = useSelect(
 		(select) => {
@@ -84,14 +48,25 @@ export function Edit({
 						select(coreStore).getEntityRecords("postType", postType.slug, {
 							per_page: -1,
 							context: "view",
-							...mappedTerms,
 							search: searchInput,
+							...taxonomyAndTermSlugs.reduce<
+								Record<string, string[] | undefined>
+							>((accumulator, taxonomyAndTermSlug) => {
+								const [taxonomySlug, TermSlug] =
+									taxonomyAndTermSlug.split("__");
+								if (accumulator[taxonomySlug] === undefined) {
+									accumulator[taxonomySlug] = [];
+								}
+								// @ts-expect-error This is throwing an error because accumulator is not const, but we are doing a check above so it will never be undefined.
+								accumulator[taxonomySlug].push(TermSlug);
+								return accumulator;
+							}, {}),
 						}) ?? [];
 				}
 			}
 			return returnObject;
 		},
-		[filteredPostTypes, searchInput, mappedTerms]
+		[filteredPostTypes, searchInput, taxonomyAndTermSlugs]
 	);
 
 	function updateSelectedPosts(
