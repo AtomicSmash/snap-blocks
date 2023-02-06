@@ -14,6 +14,7 @@ export const attributes = {
 		type: "string",
 	},
 	size: {
+		type: "string",
 		enum: ["small", "large"],
 		default: "small",
 	},
