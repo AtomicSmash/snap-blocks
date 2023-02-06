@@ -235,6 +235,7 @@ export function Edit({
 									})) ?? []
 								}
 								updateListCallback={updateSelectedPosts}
+								itemClassName={({ isSelected }) => (isSelected ? `hide` : "")}
 							/>
 						</BaseControl>
 					</PanelBody>
@@ -633,10 +634,16 @@ export function CustomMultipleSelectList<
 >({
 	list,
 	updateListCallback,
+	containerClassName,
+	itemClassName,
 	isResolving = false,
 }: {
 	list: ListItem[];
 	updateListCallback: (type: "add" | "remove", listOrItem: ListItem) => void;
+	containerClassName?: string;
+	itemClassName?:
+		| string
+		| (({ isSelected }: { isSelected: boolean }) => string);
 	isResolving?: boolean | undefined;
 }) {
 	if (isResolving) {
@@ -647,7 +654,13 @@ export function CustomMultipleSelectList<
 		);
 	}
 	return (
-		<section className="custom-multiple-select-list">
+		<section
+			className={`custom-multiple-select-list${
+				containerClassName !== undefined && containerClassName !== ""
+					? ` ${containerClassName}`
+					: ""
+			}`}
+		>
 			{list.map((listItem) => {
 				return (
 					<button
@@ -661,6 +674,10 @@ export function CustomMultipleSelectList<
 						}}
 						className={`custom-multiple-select-list-item${
 							listItem.isSelected ? " is-selected" : ""
+						}${typeof itemClassName === "string" ? ` ${itemClassName}` : ""}${
+							typeof itemClassName === "function"
+								? ` ${itemClassName({ isSelected: listItem.isSelected })}`
+								: ""
 						}`}
 					>
 						{listItem.isSelected ? (

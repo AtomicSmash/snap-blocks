@@ -69,3 +69,6 @@
 	height: 150%;
 	bottom: -100%;
 }
+.custom-multiple-select-list-item.hide {
+	display: none;
+}
