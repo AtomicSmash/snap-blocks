@@ -214,6 +214,10 @@ export function Edit({
 									).map((searchedPost) => ({
 										id: `${searchedPost.id}`,
 										title: searchedPost.title.rendered,
+										postType: searchedPost.type,
+										itemLabel: searchedPost.type
+											.toLowerCase()
+											.replace(/\.\s*([a-z])|^[a-z]/gm, (s) => s.toUpperCase()),
 										isSelected: !!selectedPosts.find((selectedPost) => {
 											return (
 												`${searchedPost.id}` === selectedPost.id &&
@@ -235,8 +239,11 @@ export function Edit({
 									: "Use the filters above to select the posts you would like to show in this block."
 							}
 						>
-							<DraggableList<InterpretedAttributes["selectedPosts"][number]>
-								list={selectedPosts}
+							<DraggableList
+								list={selectedPosts.map((selectedPost) => ({
+									...selectedPost,
+									itemLabel: selectedPost.postType,
+								}))}
 								updateListCallback={updateSelectedPosts}
 							/>
 						</BaseControl>
@@ -251,6 +258,7 @@ export function Edit({
 								className="selected-post"
 								key={selectedPost.id}
 								data-post-id={selectedPost.id}
+								data-post-type={selectedPost.postType}
 							>
 								<h3>
 									{selectedPost.title === ""
@@ -419,13 +427,21 @@ function isSomethingBeingDragged<ListItem>(
 	);
 }
 
-export function DraggableList<ListItem extends { id: string; title: string }>({
+export function DraggableList<
+	ListItem extends { id: string; title: string; itemLabel?: string }
+>({
 	list,
 	updateListCallback,
+	containerClassName,
+	itemClassName,
+	itemLabelClassName,
 	...controlProps
 }: {
 	list: ListItem[];
 	updateListCallback: UpdateListCallback<ListItem>;
+	containerClassName?: string;
+	itemClassName?: string;
+	itemLabelClassName?: string;
 } & BaseControl.ControlProps) {
 	useEffect(() => {
 		setListState({
@@ -528,6 +544,10 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 			{...controlProps}
 			className={`draggable-list${
 				isSomethingBeingDragged(listState) ? " is-dragging" : ""
+			}${
+				containerClassName !== undefined && containerClassName !== ""
+					? ` ${containerClassName}`
+					: ""
 			}`}
 		>
 			{listState.list.map((listItem, index) => {
@@ -538,7 +558,7 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 							listState.listItemBeingDragged === listItem.id
 								? " being-dragged"
 								: ""
-						}`}
+						}${typeof itemClassName === "string" ? ` ${itemClassName}` : ""}`}
 						style={{
 							order:
 								listState.listItemBeingDragged === listItem.id
@@ -590,7 +610,20 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
 								<path d="M8 7h2V5H8v2zm0 6h2v-2H8v2zm0 6h2v-2H8v2zm6-14v2h2V5h-2zm0 8h2v-2h-2v2zm0 6h2v-2h-2v2z"></path>
 							</svg>
 						</div>
-						<span>{listItem.title === "" ? "(no title)" : listItem.title}</span>
+						<span>
+							{listItem.title === "" ? "(no title)" : listItem.title}
+							{listItem.itemLabel !== undefined ? (
+								<span
+									className={`chip${
+										typeof itemLabelClassName === "string"
+											? ` ${itemLabelClassName}`
+											: ""
+									}`}
+								>
+									{listItem.itemLabel}
+								</span>
+							) : null}
+						</span>
 						<button
 							className="remove-button"
 							onClick={() => {
@@ -632,18 +665,27 @@ export function DraggableList<ListItem extends { id: string; title: string }>({
  * Custom multiple select list component
  */
 export function CustomMultipleSelectList<
-	ListItem extends { id: string; title: string; isSelected: boolean }
+	ListItem extends {
+		id: string;
+		title: string;
+		itemLabel?: string;
+		isSelected: boolean;
+	}
 >({
 	list,
 	updateListCallback,
 	containerClassName,
 	itemClassName,
+	itemLabelClassName,
 	isResolving = false,
 }: {
 	list: ListItem[];
 	updateListCallback: (type: "add" | "remove", listOrItem: ListItem) => void;
 	containerClassName?: string;
 	itemClassName?:
+		| string
+		| (({ isSelected }: { isSelected: boolean }) => string);
+	itemLabelClassName?:
 		| string
 		| (({ isSelected }: { isSelected: boolean }) => string);
 	isResolving?: boolean | undefined;
@@ -695,6 +737,23 @@ export function CustomMultipleSelectList<
 							</svg>
 						) : null}{" "}
 						{listItem.title === "" ? "(no title)" : listItem.title}
+						{listItem.itemLabel !== undefined ? (
+							<span
+								className={`chip${
+									typeof itemLabelClassName === "string"
+										? ` ${itemLabelClassName}`
+										: ""
+								}${
+									typeof itemLabelClassName === "function"
+										? ` ${itemLabelClassName({
+												isSelected: listItem.isSelected,
+										  })}`
+										: ""
+								}`}
+							>
+								{listItem.itemLabel}
+							</span>
+						) : null}
 					</button>
 				);
 			})}

@@ -25,6 +25,11 @@ export const attributes = {
 				source: "html",
 				selector: "article.selected-post h3",
 			},
+			postType: {
+				type: "string",
+				source: "attribute",
+				attribute: "data-post-type",
+			},
 		},
 		default: [],
 	},

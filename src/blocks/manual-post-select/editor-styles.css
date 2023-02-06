@@ -72,3 +72,10 @@
 .custom-multiple-select-list-item.hide {
 	display: none;
 }
+.custom-multiple-select-list-item .chip,
+.draggable-list-item .chip {
+	padding: 0.25rem;
+	background: #cdcdcd;
+	font-weight: bold;
+	display: inline-block;
+}

@@ -25,6 +25,7 @@ export function Save({
 						className="selected-post"
 						key={selectedPost.id}
 						data-post-id={selectedPost.id}
+						data-post-type={selectedPost.postType}
 					>
 						<h3>{selectedPost.title}</h3>
 					</article>
