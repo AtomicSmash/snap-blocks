@@ -65,21 +65,21 @@ type InheritType<Type extends { type: string | string[] }> = Type extends {
 export type InterpretAttributes<
 	Attributes extends Record<string, ReadonlyRecursive<AttributesObject>>
 > = {
-	[Property in keyof Attributes]: Attributes[Property] extends {
-		type: "array";
-		query: NonNullable<Attributes[Property]["query"]>;
-	}
-		? {
-				[SubProperty in keyof NonNullable<
-					Attributes[Property]["query"]
-				>]: InheritType<
-					NonNullable<Attributes[Property]["query"]>[SubProperty]
-				>;
-		  }[]
-		: Attributes[Property] extends { type: string }
-		? InheritType<Attributes[Property]>
-		: Attributes[Property]["enum"] extends undefined
-		? undefined
+	[Property in keyof Attributes]: Attributes[Property]["enum"] extends undefined
+		? Attributes[Property] extends {
+				type: "array";
+				query: NonNullable<Attributes[Property]["query"]>;
+		  }
+			? {
+					[SubProperty in keyof NonNullable<
+						Attributes[Property]["query"]
+					>]: InheritType<
+						NonNullable<Attributes[Property]["query"]>[SubProperty]
+					>;
+			  }[]
+			: Attributes[Property] extends { type: string }
+			? InheritType<Attributes[Property]>
+			: never
 		: NonNullable<Attributes[Property]["enum"]>[number];
 };
 export type BlockAttributes = Readonly<Record<string, AttributesObject>>;
