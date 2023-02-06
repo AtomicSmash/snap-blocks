@@ -1,4 +1,4 @@
-import { InterpretAttributes } from "~/helpers";
+import { BlockAttributes, BlockSupports, InterpretAttributes } from "~/helpers";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
 
@@ -28,7 +28,7 @@ export const attributes = {
 		},
 		default: [],
 	},
-} as const;
+} as const satisfies BlockAttributes;
 export type Attributes = typeof attributes;
 export type InterpretedAttributes = InterpretAttributes<Attributes>;
 
@@ -39,7 +39,7 @@ export type InterpretedAttributes = InterpretAttributes<Attributes>;
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/ The WordPress documentation}
  */
-export const supports = {} as const;
+export const supports = {} as const satisfies BlockSupports;
 export type Supports = typeof supports;
 
 export default {
