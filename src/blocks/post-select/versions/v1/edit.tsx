@@ -199,7 +199,7 @@ export function Edit({
 						/>
 						<BaseControl
 							id={useInstanceId(BaseControl, "custom-multiple-select-list-id-")}
-							label={"Searched posts"}
+							label={"Search results"}
 						>
 							<CustomMultipleSelectList
 								list={
@@ -223,7 +223,7 @@ export function Edit({
 													}
 													return 0;
 												})
-									)?.map((searchedPost) => ({
+									).map((searchedPost) => ({
 										id: `${searchedPost.id}`,
 										title: searchedPost.title.rendered,
 										isSelected: !!selectedPosts.find((selectedPost) => {
