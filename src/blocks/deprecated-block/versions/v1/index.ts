@@ -1,11 +1,13 @@
 import type { InterpretedAttributes as NewInterpretedAttributes } from "../v2/index";
-import { omit } from "lodash";
-import { createBlock } from "@wordpress/blocks";
-import {
+import type {
+	BlockAttributes,
 	BlockIsDeprecationEligibleFunction,
 	BlockMigrateDeprecationFunction,
+	BlockSupports,
 	InterpretAttributes,
 } from "~/helpers";
+import { omit } from "lodash";
+import { createBlock } from "@wordpress/blocks";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
 
@@ -34,7 +36,7 @@ export const attributes = {
 		type: "string",
 		default: "none",
 	},
-} as const;
+} as const satisfies BlockAttributes;
 export type Attributes = typeof attributes;
 export type InterpretedAttributes = InterpretAttributes<Attributes>;
 
@@ -45,7 +47,7 @@ export type InterpretedAttributes = InterpretAttributes<Attributes>;
  *
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/ The WordPress documentation}
  */
-export const supports = {} as const;
+export const supports = {} as const satisfies BlockSupports;
 export type Supports = typeof supports;
 
 /**
