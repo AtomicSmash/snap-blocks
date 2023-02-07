@@ -215,9 +215,10 @@ export function Edit({
 										id: `${searchedPost.id}`,
 										title: searchedPost.title.rendered,
 										postType: searchedPost.type,
-										itemLabel: searchedPost.type
-											.toLowerCase()
-											.replace(/\.\s*([a-z])|^[a-z]/gm, (s) => s.toUpperCase()),
+										itemLabel:
+											filteredPostTypes?.find(
+												(postType) => postType.slug === searchedPost.type
+											)?.labels.singular_name ?? undefined,
 										isSelected: !!selectedPosts.find((selectedPost) => {
 											return (
 												`${searchedPost.id}` === selectedPost.id &&
@@ -242,7 +243,10 @@ export function Edit({
 							<DraggableList
 								list={selectedPosts.map((selectedPost) => ({
 									...selectedPost,
-									itemLabel: selectedPost.postType,
+									itemLabel:
+										filteredPostTypes?.find(
+											(postType) => postType.slug === selectedPost.postType
+										)?.labels.singular_name ?? undefined,
 								}))}
 								updateListCallback={updateSelectedPosts}
 							/>
