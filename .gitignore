@@ -25,6 +25,8 @@ node_modules/
 
 # Output of `wp-scripts plugin-zip`
 *.zip
+# Output of zip command uses package name as zip name, creating the following folder
+@atomicsmash/
 
 # dotenv environment variables file
 .env
