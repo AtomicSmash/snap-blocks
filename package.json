@@ -1,13 +1,17 @@
 {
-	"name": "dynamic-block",
+	"name": "@atomicsmash/snap-blocks",
 	"type": "module",
 	"version": "0.1.0",
-	"description": "This is an example dynamic block created for testing purposes.",
+	"description": "Custom WordPress blocks for our Snap framework",
 	"author": "Atomic Smash",
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://www.atomicsmash.co.uk/",
-	"main": "build/index.js",
+	"main": "snap-blocks.php",
 	"browserslist": "defaults and >1% and not samsung > 0 and not op_mini all",
+	"files": [
+		"snap-blocks.php",
+		"build"
+	],
 	"scripts": {
 		"build": "NODE_ENV=\"production\" wp-scripts build --config webpack.config.mjs --webpack-copy-php",
 		"dev": "wp-scripts start --config webpack.config.mjs --webpack-copy-php",
@@ -20,7 +24,8 @@
 		"lint:eslint": "eslint .",
 		"lint:types": "tsc -b",
 		"format": "prettier --write .",
-		"setup": "echo \"This project doesn't have automated local setup, be sure to check the README file for instructions.\""
+		"setup": "echo \"This project doesn't have automated local setup, be sure to check the README file for instructions.\"",
+		"zip": "wp-scripts plugin-zip"
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.189",
