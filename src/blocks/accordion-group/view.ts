@@ -60,6 +60,13 @@ function getTimeInMilliseconds(time: string) {
 	throw new Error(`Time didn't end with ms or s so was not correctly parsed.`);
 }
 
+function getNumberFromStringPixels(height: string | undefined) {
+	if (height === undefined) {
+		return undefined;
+	}
+	return Number(height.replace("px", ""));
+}
+
 class Accordion {
 	private id: string;
 	private state: "open" | "collapsed";
@@ -67,6 +74,7 @@ class Accordion {
 	public trigger: HTMLButtonElement;
 	public panel: HTMLDivElement;
 	private closeTimeout: NodeJS.Timeout | null = null;
+	private heightOfOpenAccordion: number | null = null;
 
 	constructor(accordion: HTMLElement, accordionGroup: AccordionGroup) {
 		const accordionId = accordion.id;
@@ -94,9 +102,9 @@ class Accordion {
 			this.toggle();
 		});
 
-		this.panel.style.height = this.panel.style.height = getComputedStyle(
-			this.panel
-		).getPropertyValue("height");
+		this.panel.style.height = getComputedStyle(this.panel).getPropertyValue(
+			"height"
+		);
 	}
 	public getId() {
 		return this.id;
@@ -106,6 +114,12 @@ class Accordion {
 	}
 	public open() {
 		if (!this.accordionGroup.allowMultipleOpenAccordions) {
+			this.heightOfOpenAccordion =
+				getNumberFromStringPixels(
+					document.querySelector<HTMLDivElement>(
+						`.accordion-panel[data-state="open"]`
+					)?.style.height
+				) ?? 0;
 			this.accordionGroup.closeAllAccordions();
 			if (this.closeTimeout) {
 				clearTimeout(this.closeTimeout);
@@ -119,6 +133,13 @@ class Accordion {
 			this.panel.setAttribute("data-state", "open");
 			this.trigger.setAttribute("aria-expanded", "true");
 			this.trigger.setAttribute("data-state", "open");
+			if (!this.accordionGroup.allowMultipleOpenAccordions) {
+				window.scrollBy({
+					top: -1 * (this.heightOfOpenAccordion ?? 0),
+					behavior: "smooth",
+				});
+				this.heightOfOpenAccordion = null;
+			}
 		}, 1);
 	}
 	public close() {
