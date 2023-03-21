@@ -7,6 +7,7 @@ import {
 	BlockControls,
 	InnerBlocks,
 	RichText,
+	Inserter,
 } from "@wordpress/block-editor";
 import {
 	CheckboxControl,
@@ -16,6 +17,8 @@ import {
 	Path,
 	SVG,
 	ToolbarGroup,
+	ButtonGroup,
+	Button,
 } from "@wordpress/components";
 import { __ } from "@wordpress/i18n";
 import { DownArrow } from "~/svgs";
@@ -107,7 +110,11 @@ export function Edit({
 				</HeaderElement>
 				<div className={"accordion-panel"}>
 					<div className="accordion-panel-inner-wrapper">
-						<InnerBlocks />
+						<InnerBlocks
+							renderAppender={() => (
+								<MyButtonBlockAppender rootClientId={clientId} />
+							)}
+						/>
 					</div>
 				</div>
 			</div>
@@ -160,5 +167,24 @@ function HeadingElementIcon({
 		>
 			<Path d={elementTypeToPath[elementType]} />
 		</SVG>
+	);
+}
+
+function MyButtonBlockAppender({ rootClientId }: { rootClientId: string }) {
+	return (
+		<Inserter
+			rootClientId={rootClientId}
+			renderToggle={({ onToggle }) => (
+				<ButtonGroup>
+					<Button
+						className="accordion-inserter-button is-primary"
+						onClick={onToggle}
+					>
+						Add a new block
+					</Button>
+				</ButtonGroup>
+			)}
+			isAppender
+		/>
 	);
 }
