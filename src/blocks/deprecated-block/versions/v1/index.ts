@@ -1,11 +1,11 @@
 import type { InterpretedAttributes as NewInterpretedAttributes } from "../v2/index";
-import { omit } from "lodash";
-import { createBlock } from "@wordpress/blocks";
 import {
 	BlockIsDeprecationEligibleFunction,
 	BlockMigrateDeprecationFunction,
 	InterpretAttributes,
-} from "~/helpers";
+} from "@atomicsmash/blocks-helpers";
+import { omit } from "lodash";
+import { createBlock } from "@wordpress/blocks";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
 

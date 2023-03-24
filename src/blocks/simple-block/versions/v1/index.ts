@@ -1,4 +1,4 @@
-import { InterpretAttributes } from "~/helpers";
+import { InterpretAttributes } from "@atomicsmash/blocks-helpers";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
 

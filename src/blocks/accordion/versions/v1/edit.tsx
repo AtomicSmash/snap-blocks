@@ -1,6 +1,6 @@
 import type { InterpretedAttributes } from "./index";
+import type { BlockEditProps } from "@atomicsmash/blocks-helpers";
 import type { WPElement } from "@wordpress/element";
-import type { BlockEditProps } from "~/helpers";
 import {
 	useBlockProps,
 	InspectorControls,

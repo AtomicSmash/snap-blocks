@@ -1,6 +1,6 @@
 import type { InterpretedAttributes } from "./index";
+import type { BlockSaveProps } from "@atomicsmash/blocks-helpers";
 import type { WPElement } from "@wordpress/element";
-import type { BlockSaveProps } from "~/helpers";
 import { useBlockProps, RichText, InnerBlocks } from "@wordpress/block-editor";
 
 /**
