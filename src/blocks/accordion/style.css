@@ -1,38 +1,22 @@
-/* Variables that should be set in a theme */
-:root {
-	--color-primary: #5f00be;
-	--color-primary-faded: rgb(234 226 245);
-	--border-base-radius: 0.625rem;
-	--margin-between-blocks: 1rem;
-	--padding-base: 1rem;
-	--font-size-base: 1.25rem;
-	--font-family-base: sans-serif;
-}
-@media screen and (min-width: 768px) {
-	:root {
-		--padding-base: 1.25rem;
-	}
-}
 /**
  * The following styles get applied both on the front of your site
  * and in the editor.
  */
 
-/* Global resets, would usually be defined in theme stylesheet */
-* {
-	box-sizing: border-box;
-}
-input,
-button {
-	font: inherit;
-}
-
 .wp-block-snap-blocks-accordion {
-	border-radius: var(--border-base-radius);
-	margin-block: var(--margin-between-blocks);
-	background-color: var(--color-primary-faded);
+	--snap-accordion-border-color: var(--wp--preset--color--border);
+	--snap-accordion-margin: var(--wp--style--block-gap) 0;
+	--snap-accordion-background-color: var(--wp--preset--color--background-light);
+	--snap-accordion-border-radius: var(--wp--custom--border-radius);
+	--snap-accordion-font-size: var(--wp--preset--font-size--body);
+	--snap-accordion-font-family: var(--wp--preset--font-family--body-font);
+	--snap-accordion-padding: var(--wp--preset--spacing--normal);
 	/* This variable is called in JS so update the JS if you change this variable name */
-	--accordion-open-close-timing: 0.2s;
+	--snap-accordion-open-close-timing: 0.2s;
+
+	border-radius: var(--snap-accordion-border-radius);
+	margin: var(--snap-accordion-margin-block);
+	background-color: var(--snap-accordion-background-color);
 }
 
 /* Make the header text match no matter the selected semantic element */
@@ -40,8 +24,8 @@ button {
 .wp-block-snap-blocks-accordion.wp-block-snap-blocks-accordion
 	> :is(h2, h3, h4, h5, h6, p) {
 	margin: 0;
-	font-size: var(--font-size-base);
-	font-family: var(--font-family-base);
+	font-size: var(--snap-accordion-font-size);
+	font-family: var(--snap-accordion-font-family);
 	line-height: 1.2;
 	text-transform: none;
 	font-weight: normal;
@@ -55,7 +39,7 @@ button {
 	width: 100%;
 	background: none;
 	border: none;
-	padding: var(--padding-base);
+	padding: var(--snap-accordion-padding);
 	text-align: left;
 }
 .accordion-header-button-text {
@@ -64,18 +48,18 @@ button {
 .accordion-header-button-icon {
 	width: 2rem;
 	flex-basis: 2rem;
-	transition: transform var(--accordion-open-close-timing) ease-in-out;
+	transition: transform var(--snap-accordion-open-close-timing) ease-in-out;
 	transform-origin: center;
 }
 .accordion-header-button[data-state="collapsed"] svg {
 	transform: rotate(-90deg);
 }
 .accordion-panel {
-	transition: height var(--accordion-open-close-timing) ease-in-out;
+	transition: height var(--snap-accordion-open-close-timing) ease-in-out;
 	overflow: hidden;
 }
 .accordion-panel-inner-wrapper {
-	padding: var(--padding-base);
+	padding: var(--snap-accordion-padding);
 }
 .accordion-panel[data-state="collapsed"] {
 	height: 0 !important;

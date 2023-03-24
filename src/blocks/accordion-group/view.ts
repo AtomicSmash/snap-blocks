@@ -84,14 +84,14 @@ class Accordion {
 		this.id = accordionId;
 		this.state = "open";
 		const trigger = document.getElementById(
-			`${accordionId}-trigger`
+			`${accordionId}-trigger`,
 		) as HTMLButtonElement | null;
 		if (!trigger) {
 			throw new Error("Unable to determine the accordions trigger button.");
 		}
 		this.trigger = trigger;
 		const panel = document.getElementById(
-			`${accordionId}-panel`
+			`${accordionId}-panel`,
 		) as HTMLDivElement | null;
 		if (!panel) {
 			throw new Error("Unable to determine the accordions content panel.");
@@ -103,7 +103,7 @@ class Accordion {
 		});
 
 		this.panel.style.height = getComputedStyle(this.panel).getPropertyValue(
-			"height"
+			"height",
 		);
 	}
 	public getId() {
@@ -117,8 +117,8 @@ class Accordion {
 			this.heightOfOpenAccordion =
 				getNumberFromStringPixels(
 					document.querySelector<HTMLDivElement>(
-						`.accordion-panel[data-state="open"]`
-					)?.style.height
+						`.accordion-panel[data-state="open"]`,
+					)?.style.height,
 				) ?? 0;
 			this.accordionGroup.closeAllAccordions();
 			if (this.closeTimeout) {
@@ -150,8 +150,8 @@ class Accordion {
 		this.trigger.setAttribute("data-state", "collapsed");
 		const accordionOpenCloseTiming = getTimeInMilliseconds(
 			getComputedStyle(this.panel).getPropertyValue(
-				"--accordion-open-close-timing"
-			)
+				"--snap-accordion-open-close-timing",
+			),
 		);
 		this.closeTimeout = setTimeout(() => {
 			this.panel.style.display = "none";
@@ -176,7 +176,7 @@ class Accordion {
 
 function enableAccordionFunctionality() {
 	const accordionGroups = document.querySelectorAll<HTMLDivElement>(
-		"[data-accordion-group]"
+		"[data-accordion-group]",
 	);
 	for (const accordionGroupElement of accordionGroups) {
 		new AccordionGroup(accordionGroupElement);
