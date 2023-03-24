@@ -7,7 +7,9 @@
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://www.atomicsmash.co.uk/",
 	"main": "build/index.js",
-	"browserslist": "defaults and >1% and not samsung > 0 and not op_mini all",
+	"browserslist": [
+		"extends @atomicsmash/browserslist-config"
+	],
 	"scripts": {
 		"build": "NODE_ENV=\"production\" smash-cli blocks --in src --out build",
 		"dev": "smash-cli blocks --watch --in src --out build",
@@ -20,23 +22,18 @@
 		"lint:eslint": "eslint .",
 		"lint:types": "tsc -b",
 		"format": "prettier --write .",
-		"setup": "echo \"This project doesn't have automated local setup, be sure to check the README file for instructions.\""
+		"setup": "echo \"This project doesn't have automated local setup, be sure to check the README file for instructions.\"",
+		"prepare": "husky install"
 	},
 	"devDependencies": {
 		"@atomicsmash/cli": "^3.1.1",
+		"@atomicsmash/coding-standards": "^3.2.0",
 		"@types/wordpress__block-editor": "^11.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
-		"@wordpress/eslint-plugin": "^13.9.0",
-		"eslint": "^8.27.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-import-resolver-alias": "^1.1.2",
-		"eslint-import-resolver-node": "^0.3.6",
-		"eslint-import-resolver-typescript": "^3.5.2",
-		"eslint-plugin-import": "^2.26.0",
-		"eslint-plugin-node": "^11.1.0",
+		"@wordpress/eslint-plugin": "^13.10.3",
+		"husky": "^8.0.3",
 		"npm-run-all": "^4.1.5",
-		"prettier": "^2.7.1",
 		"typescript": "^4.9.3"
 	},
 	"dependencies": {

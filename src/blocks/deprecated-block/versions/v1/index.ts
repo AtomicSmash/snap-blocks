@@ -1,5 +1,5 @@
 import type { InterpretedAttributes as NewInterpretedAttributes } from "../v2/index";
-import {
+import type {
 	BlockIsDeprecationEligibleFunction,
 	BlockMigrateDeprecationFunction,
 	InterpretAttributes,
