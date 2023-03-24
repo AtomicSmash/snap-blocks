@@ -26,7 +26,7 @@
 		"prepare": "husky install"
 	},
 	"devDependencies": {
-		"@atomicsmash/cli": "^3.1.1",
+		"@atomicsmash/cli": "^3.1.2",
 		"@atomicsmash/coding-standards": "^3.2.0",
 		"@types/wordpress__block-editor": "^11.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
