@@ -4,7 +4,6 @@ import {
 	BlockMigrateDeprecationFunction,
 	InterpretAttributes,
 } from "@atomicsmash/blocks-helpers";
-import { omit } from "lodash";
 import { createBlock } from "@wordpress/blocks";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
@@ -59,12 +58,13 @@ const migrate: BlockMigrateDeprecationFunction<
 	InterpretedAttributes,
 	NewInterpretedAttributes
 > = (migrateAttributes) => {
+	const { url, ...rest } = migrateAttributes;
 	return [
-		omit(migrateAttributes, "url"),
+		rest,
 		[
 			createBlock("core/image", {
 				sizeSlug: "large",
-				url: migrateAttributes.url,
+				url,
 			}),
 		],
 	];
