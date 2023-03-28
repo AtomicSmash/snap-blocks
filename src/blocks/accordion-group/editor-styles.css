@@ -1,30 +1,17 @@
-/* Variables that should be set in a theme */
-:root {
-	--color-primary: #5f00be;
-	--color-primary-faded: rgb(234 226 245);
-	--border-base-radius: 0.625rem;
-	--margin-between-blocks: 1rem;
-	--padding-base: 1rem;
-	--font-size-base: 1.25rem;
-	--font-family-base: sans-serif;
-}
-@media screen and (min-width: 768px) {
-	:root {
-		--padding-base: 1.25rem;
-	}
-}
-
 /**
  * The following styles get applied inside the editor only.
  */
 
+.wp-block-snap-blocks-accordion-group {
+	--snap-accordion-group-padding: var(--wp--preset--spacing--normal);
+}
 .wp-block-snap-blocks-accordion-group .block-list-appender {
 	position: static;
 }
 .wp-block-snap-blocks-accordion-group .components-button-group {
 	background-color: #f6f7f7;
 	border: 1px solid #c3c4c7;
-	padding: var(--padding-base);
+	padding: var(--snap-accordion-group-padding);
 	text-align: center;
 	width: 100%;
 }
