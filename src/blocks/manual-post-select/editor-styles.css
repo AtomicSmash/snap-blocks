@@ -5,36 +5,67 @@
 .draggable-list {
 	display: flex;
 	flex-direction: column;
-	border: 1px solid gray;
+	border-top: 1px solid #d7d7d7;
 }
 .draggable-list-item {
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
-	padding: 0.5rem;
-	color: #3d3d3d;
+	color: #6a6a6a;
 	user-select: none;
 	position: relative;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid #d7d7d7;
 }
-.draggable-list-item:hover {
-	background: rgb(3 107 252);
-	color: #fff;
+.draggable-list-item-content {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	background: #f5f5f6;
+	border-radius: 3px;
+	padding: 0.5rem;
+}
+.draggable-list-item-text {
+	color: #1e1e1e;
+	flex: 1;
+}
+
+.draggable-list-item .drag-handle:hover,
+.draggable-list-item .remove-button:hover {
+	background: #fafafb;
+}
+.draggable-list-item .menu-icon {
+	padding: 0.25rem;
+	flex: 0 0 2rem;
+	line-height: 1.5rem;
+	font-size: 1.5rem;
+	width: 2rem;
+	height: 2rem;
 }
 .draggable-list-item .drag-handle,
 .draggable-list-item .remove-button {
-	width: 1.5rem;
-	height: 100%;
-	padding: 0;
+	padding: 0.5rem;
+	flex: 0 0 2rem;
 	line-height: 0;
-}
-.draggable-list-item .drag-handle svg,
-.draggable-list-item .remove-button svg {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	height: 2.5rem;
 }
 .draggable-list-item .drag-handle {
 	cursor: grab;
+}
+.draggable-list-item .remove-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: inherit;
+}
+.draggable-list-item .drag-handle svg {
+	width: 1rem;
+	height: 1.5rem;
+	object-fit: cover;
+}
+.draggable-list-item .remove-button svg {
+	width: 1rem;
+	height: 1rem;
+	object-fit: cover;
 }
 .draggable-list-item .drag-handle:active {
 	cursor: grabbing;
@@ -69,8 +100,8 @@
 	height: 150%;
 	bottom: -100%;
 }
-.custom-multiple-select-list-item.hide {
-	display: none;
+.custom-multiple-select-list-item .menu-icon {
+	color: #707070;
 }
 .custom-multiple-select-list-item .chip,
 .draggable-list-item .chip {
@@ -78,4 +109,36 @@
 	background: #cdcdcd;
 	font-weight: bold;
 	display: inline-block;
+}
+.custom-multiple-select-list {
+	max-height: 15rem;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.custom-multiple-select-list-item {
+	background-color: #f5f5f6;
+	border: 1px solid #d7d7d7;
+	border-radius: 3px;
+	box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.07);
+	font-size: 13px;
+	line-height: 16px;
+	color: #1e1e1e;
+	padding: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	width: calc(100% - 0.25rem);
+	cursor: pointer;
+	margin-right: 0.25rem;
+}
+.custom-multiple-select-list-item.is-selected {
+	color: #337bb5;
+}
+
+.custom-multiple-select-list-item-label {
+	flex: 1;
+	text-align: left;
 }
