@@ -24,13 +24,37 @@ define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'build/blocks/');
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function blocks_init() {
-		register_block_assets_by_block_name();
-    $blocksFolders = array_filter(array_diff(scandir(BLOCKS_DIR), array('..', '.')), function($file_or_directory) {
-			return is_dir(BLOCKS_DIR . $file_or_directory);
+	try {
+		set_error_handler(function($errno, $errstr, $errfile, $errline) {
+			// error was suppressed with the @-operator
+			if (0 === error_reporting()) {
+					return false;
+			}
+
+			throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 		});
-    foreach ($blocksFolders as $block) {
-        register_block_type( __DIR__ . '/build/blocks/' . $block . '/block.json' );
-    }
+		$build_directory = scandir(BLOCKS_DIR);
+		restore_error_handler();
+	} catch (Exception $e) {
+		if (is_admin()) {
+			if (wp_get_environment_type() === "development" || wp_get_environment_type() === "local") {
+				wp_die("Blocks directory missing in snap blocks plugin. You may need to run `npm run build` or `npm run dev`");
+			} else {
+				wp_die("There was a fatal error with the snap-blocks plugin. Please install a previous version and inform the Atomic Smash team.");
+			}
+		} else {
+			return;
+		}
+	}
+	register_block_assets_by_block_name();
+
+
+	$blocksFolders = array_filter(array_diff($build_directory, array('..', '.')), function($file_or_directory) {
+		return is_dir(BLOCKS_DIR . $file_or_directory);
+	});
+	foreach ($blocksFolders as $block) {
+		register_block_type( __DIR__ . '/build/blocks/' . $block . '/block.json' );
+	}
 }
 add_action( 'init', 'blocks_init' );
 
