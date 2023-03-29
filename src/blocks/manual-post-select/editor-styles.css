@@ -29,9 +29,11 @@
 	flex: 1;
 }
 
-.draggable-list-item .drag-handle:hover,
-.draggable-list-item .remove-button:hover {
+.draggable-list-item .drag-handle:hover {
 	background: #fafafb;
+}
+.draggable-list-item .remove-button:hover {
+	color: #da2121;
 }
 .draggable-list-item .menu-icon {
 	padding: 0.25rem;
