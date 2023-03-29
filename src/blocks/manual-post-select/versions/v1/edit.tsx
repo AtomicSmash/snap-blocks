@@ -1,7 +1,7 @@
 import type { InterpretedAttributes } from "./index";
 import type { Post, Page } from "@wordpress/core-data";
 import type { WPElement } from "@wordpress/element";
-import { ButtonHTMLAttributes, Fragment, Reducer } from "react";
+import type { ButtonHTMLAttributes, Reducer } from "react";
 import type { BlockEditProps } from "~/helpers";
 import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
 import {
@@ -481,14 +481,12 @@ function DraggableList<
 	updateListCallback,
 	containerClassName,
 	itemClassName,
-	itemLabelClassName,
 	...controlProps
 }: {
 	list: ListItem[];
 	updateListCallback: UpdateListCallback<ListItem>;
 	containerClassName?: string;
 	itemClassName?: string;
-	itemLabelClassName?: string;
 } & BaseControl.ControlProps) {
 	useEffect(() => {
 		setListState({
@@ -526,7 +524,6 @@ function DraggableList<
 				break;
 			}
 			case "end_being_dragged": {
-				console.log({ action, currentState });
 				if (action.falseOrder === null) {
 					return currentState;
 				}
@@ -539,16 +536,12 @@ function DraggableList<
 				const movedItem = currentState.list.find(
 					(listItem) => listItem.id === currentState.listItemBeingDragged
 				);
-				console.log({ movedItem, doubledUpArray: [...doubledUpArray] });
 				if (!movedItem) throw new Error("Failed to find moved item in list.");
 				const movedItemIndex = doubledUpArray.indexOf(movedItem);
-				console.log({ movedItemIndex });
 				doubledUpArray[action.falseOrder + 1] = movedItem;
-				console.log({ doubledUpArrayAfterAdd: [...doubledUpArray] });
 				if (movedItemIndex !== action.falseOrder + 1) {
 					doubledUpArray[movedItemIndex] = null;
 				}
-				console.log({ doubledUpArrayAfterRemove: [...doubledUpArray] });
 				const newList = doubledUpArray.filter(
 					(value): value is ListItem => value !== null
 				);
@@ -768,7 +761,7 @@ function CustomMultipleSelectList<
 }
 
 function WPMenuIcon({ iconString }: { iconString: string | undefined | null }) {
-	if (!iconString) {
+	if (typeof iconString !== "string") {
 		return null;
 	}
 	if (iconString === "none" || iconString === "div") {
