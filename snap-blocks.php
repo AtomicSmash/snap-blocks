@@ -40,7 +40,8 @@ function blocks_init() {
 			if (wp_get_environment_type() === "development" || wp_get_environment_type() === "local") {
 				wp_die("Blocks directory missing in snap blocks plugin. You may need to run `npm run build` or `npm run dev`");
 			} else {
-				wp_die("There was a fatal error with the snap-blocks plugin. Please install a previous version and inform the Atomic Smash team.");
+				error_log("Blocks directory missing in snap blocks plugin.");
+				wp_die("There was a fatal error with the snap blocks plugin. Please install a previous version and inform the Atomic Smash team.");
 			}
 		} else {
 			return;
