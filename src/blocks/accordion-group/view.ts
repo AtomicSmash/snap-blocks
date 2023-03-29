@@ -26,8 +26,9 @@ class AccordionGroup {
 		}
 	}
 	private initialiseAccordions() {
-		const accordionsInGroup =
-			this.accordionGroup.querySelectorAll<HTMLElement>("[data-accordion]");
+		const accordionsInGroup = document.querySelectorAll<HTMLElement>(
+			`[id='${this.accordionGroup.id}'] > [data-accordion]`,
+		);
 		let isFirstInitiallyOpenAccordion = true;
 		for (const accordionElement of accordionsInGroup) {
 			const shouldTryToRemainOpen =
