@@ -49,7 +49,7 @@ export function Edit({
 					<PanelBody title="Block settings">
 						<CheckboxControl
 							label="Is accordion open by default?"
-							help={`Allows you to set the initial state for the accordion. If only one accordion is allowed to be open at a time in the group, this setting will only apply to the first accordion.`}
+							help={`Allows you to set the initial state for the accordion. If only one accordion is allowed to be open at a time in the group, this setting will only apply to the first accordion with this setting enabled.`}
 							checked={isInitiallyOpen}
 							onChange={(isInputChecked) => {
 								setAttributes({ isInitiallyOpen: isInputChecked });
@@ -78,7 +78,7 @@ export function Edit({
 										role: "menuitemradio",
 									};
 								}
-							}
+							},
 						)}
 					/>
 				</ToolbarGroup>
@@ -123,7 +123,7 @@ export function Edit({
 }
 
 function getHumanNameOfElement(
-	element: InterpretedAttributes["headerElement"]
+	element: InterpretedAttributes["headerElement"],
 ) {
 	switch (element) {
 		case "h2":
