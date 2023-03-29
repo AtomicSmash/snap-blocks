@@ -36,7 +36,7 @@ class AccordionGroup {
 			let isInitiallyOpen: boolean;
 			if (this.allowMultipleOpenAccordions) {
 				isInitiallyOpen = shouldTryToRemainOpen;
-			} else if (isFirstInitiallyOpenAccordion) {
+			} else if (isFirstInitiallyOpenAccordion && shouldTryToRemainOpen) {
 				isInitiallyOpen = true;
 				isFirstInitiallyOpenAccordion = false;
 			} else {
@@ -171,6 +171,8 @@ class Accordion {
 			id: this.id,
 			state: this.state,
 			groupId: this.accordionGroup.getId(),
+			isInitiallyOpen:
+				this.panel.parentElement?.dataset.isInitiallyOpen === "true",
 		});
 	}
 }
