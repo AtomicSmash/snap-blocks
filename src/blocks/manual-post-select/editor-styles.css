@@ -105,6 +105,9 @@
 .custom-multiple-select-list-item .menu-icon {
 	color: #707070;
 }
+.custom-multiple-select-list-item.is-selected .menu-icon {
+	color: currentColor;
+}
 .custom-multiple-select-list-item .chip,
 .draggable-list-item .chip {
 	padding: 0.25rem;

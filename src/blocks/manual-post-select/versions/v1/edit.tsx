@@ -119,12 +119,14 @@ export function Edit({
 											id: "any",
 											title: "Show all",
 											isSelected: selectedPostTypes.includes("any"),
+											icon: "dashicons-image-filter",
 										},
 										...filteredPostTypes.map((postType) => {
 											return {
 												id: postType.slug,
 												title: postType.name,
 												isSelected: selectedPostTypes.includes(postType.slug),
+												icon: postType.icon,
 											};
 										}),
 									]}
@@ -159,10 +161,9 @@ export function Edit({
 													}
 												}}
 											>
+												<WPMenuIcon iconString={listItem.icon} />
 												<span className="custom-multiple-select-list-item-label">
-													{listItem.title === ""
-														? "(no title)"
-														: listItem.title}
+													{listItem.title}
 												</span>
 												{listItem.isSelected ? (
 													<svg
