@@ -7,7 +7,6 @@ import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
 import {
 	Panel,
 	PanelBody,
-	SelectControl,
 	// @ts-expect-error Outdated 3rd party WP types 🙄
 	SearchControl,
 	BaseControl,
@@ -35,7 +34,7 @@ export function Edit({
 	const blockProps = useBlockProps();
 	const { filteredPostTypes, mappedTaxonomies } = usePostTypes();
 	const [searchInput, setSearchInput] = useState("");
-	const [selectedPostType, setSelectedPostType] = useState("any");
+	const [selectedPostTypes, setSelectedPostTypes] = useState(["any"]);
 	const [taxonomyAndTermSlugs, setTaxonomyAndTermSlugs] = useState<string[]>(
 		[]
 	);
@@ -109,99 +108,162 @@ export function Edit({
 			<InspectorControls>
 				<Panel>
 					<PanelBody title="Select posts">
-						<SelectControl<typeof selectedPostType>
-							label="Post Type"
-							value={selectedPostType}
-							options={
-								filteredPostTypes
-									? [
-											...filteredPostTypes.map(({ labels, slug }) => ({
-												label:
-													labels.singular_name ??
-													"Error: Unable to retrieve post type name.",
-												value: slug,
-											})),
-											{ label: "Any", value: "any" },
-									  ]
-									: [{ label: "Any", value: "any" }]
-							}
-							onChange={(newPostType) => {
-								setSelectedPostType(newPostType);
-							}}
-						/>
-						{mappedTaxonomies
-							? mappedTaxonomies[selectedPostType]?.map((taxonomy) => {
-									if (!taxonomy.terms || taxonomy.terms.length === 0) {
-										return null;
-									}
-									return (
-										<BaseControl
-											key={taxonomy.slug}
-											id={`${taxonomy.slug}-custom-multiple-select-list`}
-											label={taxonomy.name}
-										>
-											<CustomMultipleSelectList
-												list={taxonomy.terms.map((term) => {
-													const uniqueId = `${taxonomy.slug}__${term.slug}`;
-													return {
-														id: uniqueId,
-														title: term.name,
-														isSelected: taxonomyAndTermSlugs.includes(uniqueId),
-													};
-												})}
-												renderItem={({ listItem, buttonProps }) => {
-													return (
-														<button
-															key={listItem.id}
-															{...buttonProps}
-															onClick={(event) => {
-																event.preventDefault();
-																if (listItem.isSelected) {
-																	setTaxonomyAndTermSlugs(
-																		taxonomyAndTermSlugs.filter(
-																			(filterListItem) => {
-																				return filterListItem !== listItem.id;
-																			}
-																		)
-																	);
-																} else {
-																	setTaxonomyAndTermSlugs([
-																		...taxonomyAndTermSlugs,
-																		listItem.id,
-																	]);
-																}
-															}}
-														>
-															<span className="custom-multiple-select-list-item-label">
-																{listItem.title === ""
-																	? "(no title)"
-																	: listItem.title}
-															</span>
-															{listItem.isSelected ? (
-																<svg
-																	width="14"
-																	height="11"
-																	viewBox="0 0 14 11"
-																	fill="none"
-																	xmlns="http://www.w3.org/2000/svg"
-																	focusable={false}
-																	role="presentation"
-																>
-																	<path
-																		d="M1 5L5 9L13 1"
-																		stroke="currentColor"
-																		strokeWidth="2"
-																		strokeLinecap="round"
-																	/>
-																</svg>
-															) : null}
-														</button>
-													);
+						{filteredPostTypes !== undefined ? (
+							<BaseControl
+								label={"Post Type"}
+								id={"custom-multiple-select-list-post-types"}
+							>
+								<CustomMultipleSelectList
+									list={[
+										{
+											id: "any",
+											title: "Show all",
+											isSelected: selectedPostTypes.includes("any"),
+										},
+										...filteredPostTypes.map((postType) => {
+											return {
+												id: postType.slug,
+												title: postType.name,
+												isSelected: selectedPostTypes.includes(postType.slug),
+											};
+										}),
+									]}
+									renderItem={({ listItem, buttonProps }) => {
+										return (
+											<button
+												key={listItem.id}
+												{...buttonProps}
+												onClick={(event) => {
+													event.preventDefault();
+													if (listItem.id === "any") {
+														setSelectedPostTypes(["any"]);
+													} else if (selectedPostTypes.includes(listItem.id)) {
+														const remainingPostTypes = selectedPostTypes.filter(
+															(value) => value !== listItem.id
+														);
+														if (remainingPostTypes.length === 0) {
+															setSelectedPostTypes(["any"]);
+														} else {
+															setSelectedPostTypes(
+																selectedPostTypes.filter(
+																	(value) => value !== listItem.id
+																)
+															);
+														}
+													} else {
+														setSelectedPostTypes(
+															[...selectedPostTypes, listItem.id].filter(
+																(value) => value !== "any"
+															)
+														);
+													}
 												}}
-											/>
-										</BaseControl>
-									);
-							  })
+											>
+												<span className="custom-multiple-select-list-item-label">
+													{listItem.title === ""
+														? "(no title)"
+														: listItem.title}
+												</span>
+												{listItem.isSelected ? (
+													<svg
+														width="14"
+														height="11"
+														viewBox="0 0 14 11"
+														fill="none"
+														xmlns="http://www.w3.org/2000/svg"
+														focusable={false}
+														role="presentation"
+													>
+														<path
+															d="M1 5L5 9L13 1"
+															stroke="currentColor"
+															strokeWidth="2"
+															strokeLinecap="round"
+														/>
+													</svg>
+												) : null}
+											</button>
+										);
+									}}
+								/>
+							</BaseControl>
+						) : null}
+						{mappedTaxonomies
+							? selectedPostTypes.map((selectedPostType) =>
+									mappedTaxonomies[selectedPostType]?.map((taxonomy) => {
+										if (!taxonomy.terms || taxonomy.terms.length === 0) {
+											return null;
+										}
+										return (
+											<BaseControl
+												key={taxonomy.slug}
+												id={`${taxonomy.slug}-custom-multiple-select-list`}
+												label={taxonomy.name}
+											>
+												<CustomMultipleSelectList
+													list={taxonomy.terms.map((term) => {
+														const uniqueId = `${taxonomy.slug}__${term.slug}`;
+														return {
+															id: uniqueId,
+															title: term.name,
+															isSelected:
+																taxonomyAndTermSlugs.includes(uniqueId),
+														};
+													})}
+													renderItem={({ listItem, buttonProps }) => {
+														return (
+															<button
+																key={listItem.id}
+																{...buttonProps}
+																onClick={(event) => {
+																	event.preventDefault();
+																	if (listItem.isSelected) {
+																		setTaxonomyAndTermSlugs(
+																			taxonomyAndTermSlugs.filter(
+																				(filterListItem) => {
+																					return filterListItem !== listItem.id;
+																				}
+																			)
+																		);
+																	} else {
+																		setTaxonomyAndTermSlugs([
+																			...taxonomyAndTermSlugs,
+																			listItem.id,
+																		]);
+																	}
+																}}
+															>
+																<span className="custom-multiple-select-list-item-label">
+																	{listItem.title === ""
+																		? "(no title)"
+																		: listItem.title}
+																</span>
+																{listItem.isSelected ? (
+																	<svg
+																		width="14"
+																		height="11"
+																		viewBox="0 0 14 11"
+																		fill="none"
+																		xmlns="http://www.w3.org/2000/svg"
+																		focusable={false}
+																		role="presentation"
+																	>
+																		<path
+																			d="M1 5L5 9L13 1"
+																			stroke="currentColor"
+																			strokeWidth="2"
+																			strokeLinecap="round"
+																		/>
+																	</svg>
+																) : null}
+															</button>
+														);
+													}}
+												/>
+											</BaseControl>
+										);
+									})
+							  )
 							: null}
 						<SearchControl
 							label="Search"
@@ -216,44 +278,45 @@ export function Edit({
 						>
 							<CustomMultipleSelectList
 								list={
-									(selectedPostType !== "any"
-										? posts[selectedPostType]
+									(!selectedPostTypes.includes("any")
+										? selectedPostTypes.map(
+												(selectedPostType) => posts[selectedPostType]
+										  )
 										: Object.values(posts)
-												.flat(1)
-												.sort((a, b) => {
-													if (a.date === null || b.date === null) {
-														throw new Error(
-															"Error getting the published date."
-														);
-													}
-													const dateTimeA = new Date(a.date).getTime();
-													const dateTimeB = new Date(b.date).getTime();
-													if (dateTimeA < dateTimeB) {
-														return -1;
-													}
-													if (dateTimeA > dateTimeB) {
-														return 1;
-													}
-													return 0;
-												})
-									).map((searchedPost) => ({
-										id: `${searchedPost.id}`,
-										title: searchedPost.title.rendered,
-										postType: searchedPost.type,
-										icon: filteredPostTypes?.find(
-											(postType) => postType.slug === searchedPost.type
-										)?.icon,
-										itemLabel:
-											filteredPostTypes?.find(
+									)
+										.flat(1)
+										.sort((a, b) => {
+											if (a.date === null || b.date === null) {
+												throw new Error("Error getting the published date.");
+											}
+											const dateTimeA = new Date(a.date).getTime();
+											const dateTimeB = new Date(b.date).getTime();
+											if (dateTimeA < dateTimeB) {
+												return -1;
+											}
+											if (dateTimeA > dateTimeB) {
+												return 1;
+											}
+											return 0;
+										})
+										.map((searchedPost) => ({
+											id: `${searchedPost.id}`,
+											title: searchedPost.title.rendered,
+											postType: searchedPost.type,
+											icon: filteredPostTypes?.find(
 												(postType) => postType.slug === searchedPost.type
-											)?.labels.singular_name ?? undefined,
-										isSelected: !!selectedPosts.find((selectedPost) => {
-											return (
-												`${searchedPost.id}` === selectedPost.id &&
-												searchedPost.title.rendered === selectedPost.title
-											);
-										}),
-									})) ?? []
+											)?.icon,
+											itemLabel:
+												filteredPostTypes?.find(
+													(postType) => postType.slug === searchedPost.type
+												)?.labels.singular_name ?? undefined,
+											isSelected: !!selectedPosts.find((selectedPost) => {
+												return (
+													`${searchedPost.id}` === selectedPost.id &&
+													searchedPost.title.rendered === selectedPost.title
+												);
+											}),
+										})) ?? []
 								}
 								renderItem={({ listItem, buttonProps }) => {
 									if (listItem.isSelected) return null;
