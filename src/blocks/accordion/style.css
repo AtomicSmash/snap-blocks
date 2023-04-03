@@ -10,12 +10,12 @@
 	--snap-accordion-border-radius: var(--wp--custom--border-radius);
 	--snap-accordion-font-size: var(--wp--preset--font-size--body);
 	--snap-accordion-font-family: var(--wp--preset--font-family--body-font);
-	--snap-accordion-padding: var(--wp--preset--spacing--normal);
+	--snap-accordion-padding: var(--wp--preset--spacing--40);
 	/* This variable is called in JS so update the JS if you change this variable name */
 	--snap-accordion-open-close-timing: 0.2s;
 
 	border-radius: var(--snap-accordion-border-radius);
-	margin: var(--snap-accordion-margin-block);
+	margin: var(--snap-accordion-margin);
 	background-color: var(--snap-accordion-background-color);
 }
 
