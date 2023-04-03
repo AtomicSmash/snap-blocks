@@ -1,14 +1,18 @@
 {
-	"name": "dynamic-block",
+	"name": "snap-blocks",
+	"private": "true",
 	"type": "module",
 	"version": "0.1.0",
-	"description": "This is an example dynamic block created for testing purposes.",
 	"author": "Atomic Smash",
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://www.atomicsmash.co.uk/",
 	"main": "build/index.js",
 	"browserslist": [
 		"extends @atomicsmash/browserslist-config"
+	],
+	"files": [
+		"build/**/*",
+		"snap-blocks.php"
 	],
 	"scripts": {
 		"build": "NODE_ENV=\"production\" smash-cli blocks --in src --out build",
