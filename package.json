@@ -29,8 +29,6 @@
 		"@atomicsmash/cli": "^3.1.2",
 		"@atomicsmash/coding-standards": "^3.2.0",
 		"@types/wordpress__block-editor": "^11.0.1",
-		"@typescript-eslint/eslint-plugin": "^5.43.0",
-		"@typescript-eslint/parser": "^5.43.0",
 		"@wordpress/eslint-plugin": "^13.10.3",
 		"husky": "^8.0.3",
 		"npm-run-all": "^4.1.5",
