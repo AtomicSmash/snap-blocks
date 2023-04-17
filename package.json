@@ -15,25 +15,29 @@
 		"snap-blocks.php"
 	],
 	"scripts": {
+		"clean": "del-cli build",
 		"build": "NODE_ENV=\"production\" smash-cli blocks --in src --out build",
 		"dev": "smash-cli blocks --watch --in src --out build",
 		"deploy": "echo \"This project doesn't have an automated deploy process set up yet.\"",
 		"deploy:prod": "echo \"This project doesn't have an automated deploy process set up yet.\"",
 		"test": "echo \"This project doesn't have automated testing set up yet.\"",
 		"test:ui": "echo \"This project doesn't have automated testing set up yet.\"",
-		"release": "echo \"This project doesn't have any release steps set up yet.\"",
+		"release": "run-s clean build zip",
 		"lint": "npm-run-all --parallel lint:*",
 		"lint:eslint": "eslint .",
 		"lint:types": "tsc -b",
 		"format": "prettier --write .",
 		"setup": "echo \"This project doesn't have automated local setup, be sure to check the README file for instructions.\"",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"zip": "wp-scripts plugin-zip"
 	},
 	"devDependencies": {
 		"@atomicsmash/cli": "^3.1.2",
 		"@atomicsmash/coding-standards": "^3.2.0",
 		"@types/wordpress__block-editor": "^11.0.1",
 		"@wordpress/eslint-plugin": "^13.10.3",
+		"@wordpress/scripts": "^26.2.0",
+		"del-cli": "^5.0.0",
 		"husky": "^8.0.3",
 		"npm-run-all": "^4.1.5",
 		"typescript": "^4.9.3"
