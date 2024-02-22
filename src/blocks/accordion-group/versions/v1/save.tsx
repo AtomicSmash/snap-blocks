@@ -1,7 +1,7 @@
 import type { InterpretedAttributes } from "./index";
-import type { WPElement } from "@wordpress/element";
-import type { BlockSaveProps } from "~/helpers";
-import { useBlockProps, RichText } from "@wordpress/block-editor";
+import type { BlockSaveProps } from "@atomicsmash/blocks-helpers";
+import type { Element } from "@wordpress/element";
+import { useBlockProps, InnerBlocks } from "@wordpress/block-editor";
 
 /**
  * The save function defines the way in which the different attributes should
@@ -10,19 +10,20 @@ import { useBlockProps, RichText } from "@wordpress/block-editor";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export function Save({
 	attributes,
-}: BlockSaveProps<InterpretedAttributes>): WPElement {
-	const { title, url, align, size } = attributes;
+}: BlockSaveProps<InterpretedAttributes>): Element {
+	const { isMultiple, accordionGroupId } = attributes;
 	const blockProps = useBlockProps.save({
-		className: `align-${align} blockSize-${size}`,
+		id: accordionGroupId,
+		"data-accordion-group": "",
+		"data-is-multiple": String(isMultiple),
 	});
 	return (
 		<div {...blockProps}>
-			<RichText.Content tagName="h2" value={title} />
-			<img src={url} alt="" />
+			<InnerBlocks.Content />
 		</div>
 	);
 }

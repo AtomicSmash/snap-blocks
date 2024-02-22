@@ -1,4 +1,8 @@
-import { BlockAttributes, BlockSupports, InterpretAttributes } from "~/helpers";
+import type {
+	BlockAttributes,
+	BlockSupports,
+	InterpretAttributes,
+} from "@atomicsmash/blocks-helpers";
 import { Edit } from "./edit"; // Example of what to do if property has been updated in the new version.
 import { Save } from "./save";
 
@@ -10,16 +14,19 @@ import { Save } from "./save";
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/ The WordPress documentation}
  */
 export const attributes = {
-	title: {
+	isInitiallyOpen: {
+		type: "boolean",
+		default: false,
+	},
+	accordionId: {
 		type: "string",
 	},
-	size: {
-		enum: ["small", "large"],
-		default: "small",
-	},
-	align: {
+	headerContent: {
 		type: "string",
-		default: "none",
+	},
+	headerElement: {
+		enum: ["h2", "h3", "h4", "h5", "h6", "p"],
+		default: "h2",
 	},
 } as const satisfies BlockAttributes;
 export type Attributes = typeof attributes;

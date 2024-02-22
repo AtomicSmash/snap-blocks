@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "snap-blocks/accordion-group",
+	"version": "1.0.0",
+	"title": "Accordion group",
+	"category": "theme",
+	"icon": "list-view",
+	"description": "A group of accordions.",
+	"textdomain": "snap-blocks",
+	"keywords": ["snap", "accordion"],
+	"script": "accordion-group-script",
+	"editorScript": "accordion-group-editor-script",
+	"viewScript": "accordion-group-view-script",
+	"style": "accordion-group-styles",
+	"editorStyle": "accordion-group-editor-styles"
+}

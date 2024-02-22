@@ -1,4 +1,5 @@
 {
+	"extends": "@atomicsmash/coding-standards/typescript/base",
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.tsx",
@@ -8,25 +9,13 @@
 	],
 	"compilerOptions": {
 		"sourceMap": true,
-		"lib": ["DOM", "DOM.Iterable", "ES2021"],
-		"isolatedModules": true,
-		"esModuleInterop": true,
 		"jsx": "react-jsx",
 		"module": "es2022",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
+		"lib": ["DOM", "DOM.Iterable", "ES2021"],
 		"target": "ES2021",
-		"strict": true,
-		"allowJs": true,
-		"checkJs": true,
-		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
 		"paths": {
 			"~/*": ["./src/*"]
-		},
-		"skipLibCheck": true,
-
-		// WP Scripts takes care of building everything.
-		"noEmit": true
+		}
 	}
 }

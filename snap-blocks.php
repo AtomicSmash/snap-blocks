@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Snap blocks
- * Description:       This is an example block library created for testing purposes.
+ * Description:       This is a block library created by Atomic Smash.
  * Requires at least: 5.9
  * Requires PHP:      7.0
  * Version:           0.1.0
@@ -9,9 +9,9 @@
  * Author URI:        https://www.atomicsmash.co.uk/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       block-test
+ * Text Domain:       snap-blocks
  *
- * @package           block-test
+ * @package           snap-blocks
  */
 
 define('BLOCKS_DIR', plugin_dir_path( __FILE__ ).'build/blocks/');
