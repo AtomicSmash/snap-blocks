@@ -1,6 +1,6 @@
 import type { InterpretedAttributes } from "./index";
 import type { BlockEditProps } from "@atomicsmash/blocks-helpers";
-import type { WPElement } from "@wordpress/element";
+import type { Element } from "@wordpress/element";
 import {
 	useBlockProps,
 	InspectorControls,
@@ -30,13 +30,13 @@ import { attributes as definedAttributeOptions } from "./index";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export function Edit({
 	clientId,
 	attributes,
 	setAttributes,
-}: BlockEditProps<InterpretedAttributes>): WPElement {
+}: BlockEditProps<InterpretedAttributes>): Element {
 	const { isInitiallyOpen, headerContent, headerElement } = attributes;
 	const HeaderElement = headerElement;
 	const blockProps = useBlockProps();
@@ -58,7 +58,7 @@ export function Edit({
 					</PanelBody>
 				</Panel>
 			</InspectorControls>
-			<BlockControls>
+			<BlockControls controls={[]}>
 				<ToolbarGroup>
 					<DropdownMenu
 						popoverProps={{ className: "accordion-heading-element-dropdown" }}
@@ -174,7 +174,7 @@ function MyButtonBlockAppender({ rootClientId }: { rootClientId: string }) {
 	return (
 		<Inserter
 			rootClientId={rootClientId}
-			renderToggle={({ onToggle }) => (
+			renderToggle={({ onToggle }: { onToggle: () => void }) => (
 				<ButtonGroup>
 					<Button
 						className="accordion-inserter-button is-primary"

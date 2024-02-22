@@ -1,6 +1,6 @@
 import type { InterpretedAttributes } from "./index";
 import type { BlockEditProps } from "@atomicsmash/blocks-helpers";
-import type { WPElement } from "@wordpress/element";
+import type { Element } from "@wordpress/element";
 import {
 	useBlockProps,
 	InspectorControls,
@@ -21,13 +21,13 @@ import {
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export function Edit({
 	clientId,
 	attributes,
 	setAttributes,
-}: BlockEditProps<InterpretedAttributes>): WPElement {
+}: BlockEditProps<InterpretedAttributes>): Element {
 	const { isMultiple } = attributes;
 	const blockProps = useBlockProps();
 	setAttributes({ accordionGroupId: clientId });
@@ -64,7 +64,7 @@ function MyButtonBlockAppender({ rootClientId }: { rootClientId: string }) {
 	return (
 		<Inserter
 			rootClientId={rootClientId}
-			renderToggle={({ onToggle }) => (
+			renderToggle={({ onToggle }: { onToggle: () => void }) => (
 				<ButtonGroup>
 					<Button
 						className="accordion-inserter-button is-primary"

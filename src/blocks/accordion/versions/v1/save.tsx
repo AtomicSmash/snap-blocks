@@ -1,6 +1,6 @@
 import type { InterpretedAttributes } from "./index";
 import type { BlockSaveProps } from "@atomicsmash/blocks-helpers";
-import type { WPElement } from "@wordpress/element";
+import type { Element } from "@wordpress/element";
 import { useBlockProps, InnerBlocks, RichText } from "@wordpress/block-editor";
 import { DownArrow } from "~/svgs";
 
@@ -11,11 +11,11 @@ import { DownArrow } from "~/svgs";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export function Save({
 	attributes,
-}: BlockSaveProps<InterpretedAttributes>): WPElement {
+}: BlockSaveProps<InterpretedAttributes>): Element {
 	const { isInitiallyOpen, accordionId, headerContent, headerElement } =
 		attributes;
 	const HeaderElement = headerElement;
