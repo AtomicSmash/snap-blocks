@@ -1,7 +1,5 @@
-import {
-	registerBlockType,
-	registerSnapBlocksCollection,
-} from "@atomicsmash/blocks-helpers";
+import { registerBlockType } from "@atomicsmash/blocks-helpers";
+import { registerSnapBlocksCollection } from "~/helpers";
 import blockMetaData from "./block.json";
 import v1, { Attributes } from "./versions/v1";
 
