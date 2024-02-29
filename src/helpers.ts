@@ -1,5 +1,5 @@
+import { ASCircleLogo } from "@plugin/blocks/svgs";
 import { registerBlockCollection } from "@wordpress/blocks";
-import { ASCircleLogo } from "./svgs";
 
 export function registerSnapBlocksCollection() {
 	registerBlockCollection("snap-blocks", {

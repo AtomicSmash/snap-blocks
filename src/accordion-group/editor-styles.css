@@ -1,0 +1,28 @@
+/**
+ * The following styles get applied inside the editor only.
+ */
+
+.wp-block-snap-blocks-accordion-group {
+	--snap-accordion-group-padding: var(--wp--preset--spacing--normal);
+}
+
+.wp-block-snap-blocks-accordion-group .block-list-appender {
+	position: static;
+}
+
+.wp-block-snap-blocks-accordion-group .components-button-group {
+	background-color: #f6f7f7;
+	border: 1px solid #c3c4c7;
+	margin-top: 0.5rem;
+	padding: var(--snap-accordion-group-padding);
+	text-align: center;
+	width: 100%;
+}
+
+.wp-block-snap-blocks-accordion-group
+	.components-button-group
+	.components-button {
+	background: var(--wp-admin-theme-color, #007cba);
+	box-shadow: none;
+	margin: 0.5rem;
+}
